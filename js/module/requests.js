@@ -1,32 +1,46 @@
 var xmlHttp
-//o massa de modular o js é que algumas variaveis tipo essa de requisição http
-//podem ficar globais mas ficam acessivel só as funções aqui desse modulo ja que nao foi exportada!
 
 export var json
 
-export function fnRead() {
-  xmlHttp = new XMLHttpRequest();
-  xmlHttp.open("GET", "server.php?op=read", true);
-  xmlHttp.send();
-  xmlHttp.onreadystatechange = readCallback;
+//retorna json com dados do usuario solicitado
+export function getUsuario(email) {
+    xmlHttp = new XMLHttpRequest();
+    var url = "server.php?op=getUsuario&&email=" + email;
+    xmlHttp.open("GET", url, true);
+    xmlHttp.send();
+    xmlHttp.onreadystatechange = usuarioCallback;
 }
-
-function readCallback() {
+function usuarioCallback() {
     if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
         json = JSON.parse(xmlHttp.responseText);
     }
 }
 
-export function invertejson() {
-    json = [json[randomNum(0,3)], json[randomNum(0,3)], json[randomNum(0,3)], json[randomNum(0,3)]];
+//retorna json com todos agendamentos do usuario
+export function getAgendamentos(id) {
+    xmlHttp = new XMLHttpRequest();
+    var url = "server.php?op=getAgendamentos&&id=" + id;
+    xmlHttp.open("GET", url, true);
+    xmlHttp.send();
+    xmlHttp.onreadystatechange = agendamentosCallback;
+}
+function agendamentosCallback() {
+    if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
+        json = JSON.parse(xmlHttp.responseText);
+    }
 }
 
 
-//funções que só forem necessarias pro funcionamento de funções de dentro do modulo, tipo essa aqui,
-//tbm podem ficar acessiveis só dentro do modulo sem exportar!
-function randomNum(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    var saida = Math.floor(Math.random() * (max - min)) + min
-    return saida;
-  }
+//retorna json com dados para montar calendario
+export function getCalendario(mes, ano, escritorio) {
+    xmlHttp = new XMLHttpRequest();
+    var url = "server.php?op=getCalendario&&escritorio=" + escritorio + "&mes=" + mes + "&ano=" + ano;
+    xmlHttp.open("GET", url, true);
+    xmlHttp.send();
+    xmlHttp.onreadystatechange = calendarioCallback;
+}
+function calendarioCallback() {
+    if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
+        json = JSON.parse(xmlHttp.responseText);
+    }
+}
