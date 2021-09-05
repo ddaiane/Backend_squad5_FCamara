@@ -1,7 +1,16 @@
 {
-  "name": "milesimo",
-  "version": "0.0.0",
+  "name": "agendamentos_fcamara",
+  "version": "1.0.0",
+  "description": "aplicacao web para realizar agendamentos desenvolvida no hackaton da FCamara 2021",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ddaiane/Backend_squad5_FCamara"
+  },
+  "authors": {
+    "author1": "Daiane Marcon",
+    "author2": "Debora Brum"
+  },
   "scripts": {
     "start": "node ./bin/www"
   },
