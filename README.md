@@ -10,4 +10,8 @@ tecnologias utilizadas: nodejs, express e banco de dados postgreSQL
 - `npm start`
 - aplicação roda no localhost:3000 no navegador
 
-*responsáveis pelo desenvolvimento: [Daiane Marcon](https://github.com/ddaiane) e [Debora Brum](https://github.com/DeboraBrum)*
+**desenvolvedores**: 
+
+Front-end: [João Paulo](https://github.com/Jotapas) e [Filipe Galvão](https://github.com/g-filipe)
+
+Back-end: [Daiane Marcon](https://github.com/ddaiane) e [Debora Brum](https://github.com/DeboraBrum)
