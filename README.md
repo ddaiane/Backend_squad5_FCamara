@@ -1,6 +1,8 @@
-back-end da aplicação web que o front está sendo desenvolvido [aqui](https://github.com/ddaiane/FCamara_squad5).
+###### back-end da aplicação web que o front está sendo desenvolvido [aqui](https://github.com/ddaiane/FCamara_squad5).
 
-desenvolvimento ainda em estágio inicial
+tecnologias utilizadas: nodejs, express e banco de dados postgreSQL
+
+*desenvolvimento ainda em estágio inicial*
 
 **instruções:**
 - clonar o repositório
