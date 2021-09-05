@@ -4,7 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-var indexRouter = require('./routes/index');
+
 var usersRouter = require('./routes/users');
 var consultoresRouter = require('./routes/consultores')
 
@@ -20,7 +20,19 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
+
+// //entrega os css, imagens e scripts
+// app.use(express.static(__dirname + "/public"));
+
+//index html na raiz da aplicação
+var indexPath = __dirname + "/views/index.html";
+app.get("/", function(req, res) {
+  res.sendFile(indexPath);
+});
+
+
+
+
 app.use('/users', usersRouter);
 app.use('/consultores', consultoresRouter);
 

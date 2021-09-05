@@ -2,21 +2,21 @@ var xmlHttp
 
 export var json
 
-//retorna json com dados do usuario solicitado
-export function getUsuario(email) {
-    xmlHttp = new XMLHttpRequest();
-    var url = "server.php?op=getUsuario&&email=" + email;
-    xmlHttp.open("GET", url, true);
-    xmlHttp.send();
-    xmlHttp.onreadystatechange = usuarioCallback;
-}
-function usuarioCallback() {
-    if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
-        json = JSON.parse(xmlHttp.responseText);
-    }
-}
+//retorna json com todos usuario
+// export function getUsuarios() {
+//     xmlHttp = new XMLHttpRequest();
+//     var url = "localhost:3000/consultores";
+//     xmlHttp.open("GET", url, true);
+//     xmlHttp.send();
+//     xmlHttp.onreadystatechange = usuarioCallback;
+// }
+// function usuarioCallback() {
+//     if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
+//         json = JSON.parse(xmlHttp.responseText);
+//     }
+// }
 
-//retorna json com todos agendamentos do usuario
+/* //retorna json com todos agendamentos do usuario
 export function getAgendamentos(id) {
     xmlHttp = new XMLHttpRequest();
     var url = "server.php?op=getAgendamentos&&id=" + id;
@@ -43,4 +43,4 @@ function calendarioCallback() {
     if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
         json = JSON.parse(xmlHttp.responseText);
     }
-}
+} */

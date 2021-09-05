@@ -4,10 +4,10 @@ async function connect() {
     //postgres://usuario:senha@servidor:porta/banco
     const { Pool } = require("pg");
     var config = {
-        user: 'hesjocpg', 
-        database: 'hesjocpg', 
-        password: '2eQObwu3fdrP-i_NsrVkMaXfuOeIZCh2', 
-        host: 'kesavan.db.elephantsql.com', 
+        user: 'xxxx', 
+        database: 'xxxx', 
+        password: 'xxxx', 
+        host: 'xxxxx', 
         port: 5432, 
         max: 10, // max number of clients in the pool
         idleTimeoutMillis: 30000
