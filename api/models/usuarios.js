@@ -1,4 +1,4 @@
-const { connect } = require("../db.js");
+const { connect } = require("../DB/db.js");
 
 
 //retorna todos usuarios porem sem o campo senha

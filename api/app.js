@@ -7,6 +7,7 @@ var logger = require('morgan');
 //caminhos rotas em variaveis
 var usuariosRouter = require('./routes/usuarios')
 
+
 var app = express();
 
 // view engine setup

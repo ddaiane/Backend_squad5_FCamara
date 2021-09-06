@@ -1,0 +1,1 @@
+//cria tabelas caso não existam no banco
