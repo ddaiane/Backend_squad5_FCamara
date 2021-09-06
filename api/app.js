@@ -21,10 +21,12 @@ app.use(cookieParser());
 
 
 //entrega os css, imagens e scripts
+//entregando esse apenas pra testar como ta a saida dos dados e a conexao entre tudo, quando integrar com o react tem que mudar aqui!
 app.use(express.static(path.join(__dirname, 'public')));
 
 
 //entrega paginas
+//entregando um index apenas pra testar como ta a saida dos dados e a conexao entre tudo, quando integrar com o react tem que mudar aqui!
 var indexPath = __dirname + "/views/index.html";
 app.get("/", function(req, res) {
   res.sendFile(indexPath);
