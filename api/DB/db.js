@@ -1,14 +1,16 @@
+require('dotenv').config();
+
 async function connect() {
     if (global.connection) return global.connection.connect();
   
     //postgres://usuario:senha@servidor:porta/banco
     const { Pool } = require("pg");
     var config = {
-        user: 'xxxx', 
-        database: 'xxx', 
-        password: 'xxxx', 
-        host: 'xxxxx', 
-        port: 5432, 
+        user: process.env.PG_USER,
+        database: process.env.PG_DATABASE, 
+        password: process.env.PG_SENHA, 
+        host: process.env.PG_HOST, 
+        port: process.env.PG_PORT, 
         max: 10, // max number of clients in the pool
         idleTimeoutMillis: 30000
     };
