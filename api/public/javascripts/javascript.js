@@ -7,10 +7,10 @@
 var json
 var xmlHttp
 
-//retorna json com todos usuario
+//retorna json com todos usuario sem info de senha
 function getUsuarios() {
     xmlHttp = new XMLHttpRequest();
-    var url = "http://localhost:3000/consultores";
+    var url = "http://localhost:3000/usuarios";
     xmlHttp.open("GET", url, true);
     xmlHttp.send();
     xmlHttp.onreadystatechange = usuarioCallback;

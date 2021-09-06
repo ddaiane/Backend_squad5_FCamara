@@ -4,9 +4,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-
-var usersRouter = require('./routes/users');
-var consultoresRouter = require('./routes/consultores')
+//caminhos rotas em variaveis
+var usuariosRouter = require('./routes/usuarios')
 
 var app = express();
 
@@ -18,26 +17,28 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+
+
+//entrega os css, imagens e scripts
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-// //entrega os css, imagens e scripts
-// app.use(express.static(__dirname + "/public"));
-
-//index html na raiz da aplicação
+//entrega paginas
 var indexPath = __dirname + "/views/index.html";
 app.get("/", function(req, res) {
   res.sendFile(indexPath);
 });
 
 
+//aponta rotas
+app.use('/usuarios', usuariosRouter);
 
 
-app.use('/users', usersRouter);
-app.use('/consultores', consultoresRouter);
 
 
 
+//tratamentos de erros
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
