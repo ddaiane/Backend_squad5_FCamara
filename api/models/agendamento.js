@@ -60,14 +60,15 @@ async function alterarAgendamento(req, res) {
 
 
 
-
+//retorna todos os agendamentos FUTUROS
 async function listarAgendamentos(req, res) {
   try {
     const { id_usuario } = req.params;
     const query = `
-    SELECT * FROM agendaSP where id_usuario=${id_usuario}
+    SELECT * FROM agendaSP where id_usuario=${id_usuario} AND data >= now()
     UNION
-    SELECT * FROM agendasantos where id_usuario=${id_usuario}`;
+    SELECT * FROM agendasantos where id_usuario=${id_usuario} AND data >= now()
+    ORDER BY data`;
 
     const db = await connect();
     const resultado = await db.query(query);
