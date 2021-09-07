@@ -1,5 +1,6 @@
 require('dotenv').config();
 
+
 async function connect() {
     if (global.connection) return global.connection.connect();
   
@@ -15,6 +16,7 @@ async function connect() {
         idleTimeoutMillis: 30000
     };
     const pool = new Pool(config);
+
   
     //apenas testando a conexão
     const client = await pool.connect();
@@ -26,11 +28,18 @@ async function connect() {
   
     //guardando para usar sempre o mesmo
     global.connection = pool;
+
+
+
     return pool.connect();
   }
   
   connect();
-  
-  
-  
+
+   
   module.exports = {connect};
+
+  //aciona a inicialização do banco
+  require('./init'); 
+  
+ 
