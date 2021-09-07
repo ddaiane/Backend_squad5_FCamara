@@ -3,11 +3,6 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
-//caminhos rotas em variaveis
-var usuariosRouter = require('./routes/usuarios')
-
-
 var app = express();
 
 // view engine setup
@@ -34,8 +29,17 @@ app.get("/", function(req, res) {
 });
 
 
+//caminhos rotas em variaveis
+var usuariosRouter = require('./routes/usuarios.routes');
+var agendamentosRouter = require('./routes/agendamentos.routes');
+var calendarioRouter = require('./routes/calendario.routes');
+var lotacaoRouter = require('./routes/lotacao.routes');
+
 //aponta rotas
-app.use('/usuarios', usuariosRouter);
+app.use('/api/usuarios', usuariosRouter); //debora, to botando pra nossas url serem com /api antes pra ficar mais claro pro pessoal do front e nao dar confusao com as rotas do react!
+app.use('/api/agendamentos', agendamentosRouter);
+app.use('/api/calendario', calendarioRouter);
+app.use('/api/lotacao', lotacaoRouter);
 
 
 
