@@ -36,7 +36,7 @@ async function excluirAgendamento(req, res) {
       id_escritorio === "1" ? "agendasp" : "agendasantos";
 
     const db = await connect();
-    await db.query(
+    const resultado = await db.query(
       `DELETE FROM ${tabelaParaConsulta} WHERE id_agendamento=${id_agendamento} RETURNING data`
     );
     //retorna true ou false pra confirmar se deletou no bd

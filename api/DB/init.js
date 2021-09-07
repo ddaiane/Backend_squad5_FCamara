@@ -8,6 +8,7 @@ async function createTables() {
     await agendaSP();
     await agendaSantos();
     await lotacao();
+    await insereEscritorio();
 
 }
 
@@ -65,6 +66,26 @@ async function lotacao() {
         vagas integer NOT NULL)`;
 
         await db.query(query);
+}
+
+//se nao existir ainda, insere na tabela de lotacao a entrada do escritorio de sp e de santos
+//pra guardarem as lotacoes 
+async function insereEscritorio() {
+    const db = await connect();
+
+    const query = `SELECT * FROM LOTACAO where nome_escritorio = 'Santos'`;
+    //se false, precisa adicionar o escritorio
+    const santos = await db.query(query);
+    if (santos.rowCount === 0) {
+          //nao existe no bd, precisa add chamar funcao que adiciona
+    }
+    const query2 = `SELECT * FROM LOTACAO where nome_escritorio = 'agendaSP'`;
+    //se false, precisa adicionar o escritorio
+    const sp = await db.query(query2);
+    if (sp.rowCount === 0) {
+          //nao existe no bd, precisa add chamar funcao que adiciona
+    }
+    
 }
 
 
