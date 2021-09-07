@@ -5,11 +5,11 @@ async function listarTodosAgendamentos(req, res) {
     const { id_escritorio, mes, ano } = req.body;
 
     const tabelaParaConsulta =
-      id_escritorio === 1 ? "agendamento_sp" : "agendamento_sn";
+      id_escritorio === 1 ? "agendasp" : "agendasantos";
 
     const db = await connect();
     const reservas = await db.query(
-      `SELECT * FROM ${tabelaParaConsulta} WHERE colaborador = ${id_usuario} AND extract(month from data) = ${mes} and extract (year from data) = ${ano}`
+      `SELECT data FROM ${tabelaParaConsulta} WHERE extract(month from data) = ${mes} and extract (year from data) = ${ano}`
     );
 
     if (!reservas.rows[0]) {
@@ -22,4 +22,4 @@ async function listarTodosAgendamentos(req, res) {
   }
 }
 
-module.exports = {listarTodosAgendamentos};
+module.exports = { listarTodosAgendamentos };

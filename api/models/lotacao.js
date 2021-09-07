@@ -6,13 +6,13 @@ async function consultaCapacidadeEscritorio(req, res) {
 
     const db = await connect();
     const capacidadeLocal = await db.query(
-      `SELECT capacidade, porcentagem_de_ocupacao FROM lotacao WHERE id_escritorio = ${id_escritorio}`
+      `SELECT capacidade, porcentagem_permitida FROM lotacao WHERE id_escritorio = ${id_escritorio}`
     );
 
     // res.json({
     //   capacidade:
     //     capacidadeLocal.rows[0].capacidade *
-    //     capacidadeLocal.rows[0].porcentagem_de_ocupacao,
+    //     capacidadeLocal.rows[0].porcentagem_permitida,
     // });
 
     res.json(capacidadeLocal.rows);
@@ -27,7 +27,7 @@ async function alterarCapacidadeEscritorio(req, res) {
       id_escritorio,
       id_usuario,
       capacidade: novaCapacidade,
-      porcentagem_de_ocupacao: novaPorcentagem,
+      porcentagem_permitida: novaPorcentagem,
     } = req.body;
 
     const db = await connect();
@@ -46,7 +46,7 @@ async function alterarCapacidadeEscritorio(req, res) {
     }
     if (novaPorcentagem) {
       await db.query(
-        `UPDATE lotacao SET porcentagem_de_ocupacao = ${novaPorcentagem} WHERE id_escritorio = ${id_escritorio}`
+        `UPDATE lotacao SET porcentagem_permitida = ${novaPorcentagem} WHERE id_escritorio = ${id_escritorio}`
       );
     }
 
