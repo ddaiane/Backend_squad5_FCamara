@@ -1,10 +1,16 @@
 const { connect } = require("../DB/db.js");
 
-
 //retorna todos agendamentos FUTUROS de um determinado mes/ano em um determinado escritorio
 async function listarTodosAgendamentos(req, res) {
   try {
     const { id_escritorio, mes, ano } = req.params;
+
+    //Verificação se todos os campos estão presentes, mensagem para o front
+    if (!id_escritorio || !mes || !ano) {
+      return res
+        .status(400)
+        .json({ message: "Todos os campos são obrigatórios" });
+    }
 
     const tabelaParaConsulta =
       id_escritorio === 1 ? "agendasp" : "agendasantos";

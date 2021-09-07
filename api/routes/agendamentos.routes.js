@@ -7,8 +7,8 @@ const {
   listarAgendamentos,
 } = require("../models/agendamento");
 
-router.post("/agendamento", criarAgendamento);
-router.patch("/agendamento", alterarAgendamento);
+router.post("/", criarAgendamento);
+router.patch("/", alterarAgendamento);
 router.delete("/:id_agendamento&:id_escritorio", excluirAgendamento);
 router.get("/:id_usuario", listarAgendamentos);
 

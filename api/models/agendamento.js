@@ -4,6 +4,11 @@ async function criarAgendamento(req, res) {
   try {
     const { id_escritorio, id_usuario, data } = req.body;
 
+    //Verificação se todos os campos estão presentes, mensagem para o front
+    if(!id_escritorio || !id_usuario || !data){
+      return res.status(400).json({message: "Todos os campos são obrigatórios"});
+    }
+
     const tabelaParaConsulta =
       id_escritorio === 1 ? "agendasp" : "agendasantos";
 
@@ -18,21 +23,27 @@ async function criarAgendamento(req, res) {
   }
 }
 
-
 async function excluirAgendamento(req, res) {
   try {
     const { id_agendamento, id_escritorio } = req.params;
+
+    //Verificação se todos os campos estão presentes, mensagem para o front
+    if(!id_escritorio || !id_agendamento){
+      return res.status(400).json({message: "Todos os campos são obrigatórios"});
+    }
+
     const tabelaParaConsulta =
-      id_escritorio === '1' ? "agendasp" : "agendasantos";
+      id_escritorio === "1" ? "agendasp" : "agendasantos";
 
     const db = await connect();
+    await db.query(
       `DELETE FROM ${tabelaParaConsulta} WHERE id_agendamento=${id_agendamento} RETURNING data`
     );
     //retorna true ou false pra confirmar se deletou no bd
     if (resultado.rowCount === 0) {
-      res.json({'result':'false'});
-    } else if (resultado.rowCount === 1){
-      res.json({'result': 'true', 'data deletada': resultado.rows});
+      res.json({ result: "false" });
+    } else if (resultado.rowCount === 1) {
+      res.json({ result: "true", "data deletada": resultado.rows });
     }
   } catch (err) {
     res.json({ error: true, message: err.message });
@@ -42,6 +53,12 @@ async function excluirAgendamento(req, res) {
 async function alterarAgendamento(req, res) {
   try {
     const { id_agendamento, id_escritorio, data: novaData } = req.body;
+
+    //Verificação se todos os campos estão presentes, mensagem para o front
+    if(!id_escritorio || !id_agendamento || !novaData){
+      return res.status(400).json({message: "Todos os campos são obrigatórios"});
+    }
+
     const tabelaParaConsulta =
       id_escritorio === 1 ? "agendasp" : "agendasantos";
 
@@ -56,12 +73,16 @@ async function alterarAgendamento(req, res) {
   }
 }
 
-
-
 //retorna todos os agendamentos FUTUROS
 async function listarAgendamentos(req, res) {
   try {
     const { id_usuario } = req.params;
+
+    //Verificação se todos os campos estão presentes, mensagem para o front
+    if(!id_usuario){
+      return res.status(400).json({message: "Todos os campos são obrigatórios"});
+    }
+
     const query = `
     SELECT * FROM agendaSP where id_usuario=${id_usuario} AND data >= now()
     UNION
@@ -70,13 +91,16 @@ async function listarAgendamentos(req, res) {
 
     const db = await connect();
     const resultado = await db.query(query);
-    
-    res
-      .status(200)
-      .json(resultado.rows);
+
+    res.status(200).json(resultado.rows);
   } catch (err) {
     res.json({ error: true, message: err.message });
   }
 }
 
-module.exports = { criarAgendamento, excluirAgendamento, alterarAgendamento, listarAgendamentos };
+module.exports = {
+  criarAgendamento,
+  excluirAgendamento,
+  alterarAgendamento,
+  listarAgendamentos,
+};

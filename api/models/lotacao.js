@@ -6,6 +6,11 @@ async function consultaCapacidadeEscritorio(req, res) {
   try {
     const { id_escritorio } = req.params;
 
+    //Verificação se todos os campos estão presentes, mensagem para o front
+    if(!id_escritorio){
+      return res.status(400).json({message: "Campo id_escritorio obrigatório"});
+    }
+
     const db = await connect();
     const capacidadeLocal = await db.query(
       `SELECT * FROM lotacao WHERE id_escritorio = ${id_escritorio}`
@@ -26,6 +31,14 @@ async function alterarCapacidadeEscritorio(req, res) {
       capacidade: novaCapacidade,
       porcentagem_permitida: novaPorcentagem,
     } = req.body;
+
+    //Verificação se todos os campos estão presentes, mensagem para o front
+    if(!id_escritorio || !id_usuario ){
+      return res.status(400).json({message: "Todos os campos são obrigatórios"});
+    }
+    if(!novaCapacidade && !novaPorcentagem){
+      return res.status(400).json({message: "Nada a alterar"});
+    }
 
     const db = await connect();
     const conferenciaAdmin = await db.query(
