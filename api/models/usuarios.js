@@ -7,7 +7,6 @@ async function selectUsuarios(req, res) {
   res.json(usuarios.rows);
 }
 
-
 async function selectUmUsuario(req, res) {
   const {id_usuario} = req.params;
   const db = await connect();
