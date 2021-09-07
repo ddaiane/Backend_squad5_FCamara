@@ -8,7 +8,7 @@ async function selectUsuarios(req, res) {
   res.json(usuarios.rows);
 }
 
-// //retorna um usuario (sem o campo senha)
+// retorna um usuario (sem o campo senha)
 // async function selectUmUsuario(req, res) {
 //   const db = await connect();
 //   const usuario = await db.query("SELECT id, nome, email, isadmin FROM USUARIO WHERE id=?", id);
