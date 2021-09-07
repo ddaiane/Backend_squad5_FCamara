@@ -8,8 +8,8 @@ const {
 } = require("../models/agendamento");
 
 router.post("/agendamento", criarAgendamento);
-router.delete("/agendamento", excluirAgendamento);
 router.patch("/agendamento", alterarAgendamento);
+router.delete("/:id_agendamento&:id_escritorio", excluirAgendamento);
 router.get("/:id_usuario", listarAgendamentos);
 
 module.exports = router;

@@ -18,18 +18,25 @@ async function criarAgendamento(req, res) {
   }
 }
 
+
 async function excluirAgendamento(req, res) {
   try {
-    const { id_agendamento, id_escritorio } = req.body;
+    const { id_agendamento, id_escritorio } = req.params;
     const tabelaParaConsulta =
-      id_escritorio === 1 ? "agendasp" : "agendasantos";
+      id_escritorio === '1' ? "agendasp" : "agendasantos";
 
     const db = await connect();
-    await db.query(
+    const resultado = await db.query(
       `DELETE FROM ${tabelaParaConsulta} WHERE id_agendamento=${id_agendamento}`
     );
 
-    res.status(200).json({ mensagem: true });
+    //retorna true ou false pra confirmar se deletou no bd
+    if (resultado.rowCount === 0) {
+      res.json({'result':'false'});
+    } else if (resultado.rowCount === 1){
+      res.json({'result': 'true'});
+    }
+
   } catch (err) {
     res.json({ error: true, message: err.message });
   }
