@@ -27,16 +27,15 @@ async function excluirAgendamento(req, res) {
 
     const db = await connect();
     const resultado = await db.query(
-      `DELETE FROM ${tabelaParaConsulta} WHERE id_agendamento=${id_agendamento}`
+      `DELETE FROM ${tabelaParaConsulta} WHERE id_agendamento=${id_agendamento} RETURNING data`
     );
-
+      console.log(resultado);
     //retorna true ou false pra confirmar se deletou no bd
     if (resultado.rowCount === 0) {
       res.json({'result':'false'});
     } else if (resultado.rowCount === 1){
-      res.json({'result': 'true'});
+      res.json({'result': 'true', 'data deletada': resultado.rows});
     }
-
   } catch (err) {
     res.json({ error: true, message: err.message });
   }
