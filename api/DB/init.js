@@ -12,7 +12,6 @@ async function createTables() {
 }
 
 async function usuario() {
-    console.log("entrou usuario");
     const db = await connect();
     
     const query = `CREATE TABLE IF NOT EXISTS USUARIO (
@@ -28,7 +27,6 @@ async function usuario() {
 }
 
 async function agendaSP() {
-    console.log("entrou agendasp");
 
     const db = await connect();
 
@@ -43,7 +41,6 @@ async function agendaSP() {
 }
 
 async function agendaSantos() {
-    console.log("entrou agenda santos");
 
     const db = await connect();
 
@@ -57,7 +54,6 @@ async function agendaSantos() {
 }
 
 async function lotacao() {
-    console.log("entrou lotacao");
 
     const db = await connect();
 
@@ -65,10 +61,13 @@ async function lotacao() {
         id_escritorio  SERIAL PRIMARY KEY,
         nome_escritorio VARCHAR(100) NOT NULL,
         capacidade integer NOT NULL,
-        porcentagem_permitida numeric(4,3) NOT NULL)`;
+        porcentagem_permitida integer NOT NULL,
+        vagas integer NOT NULL)`;
 
         await db.query(query);
 }
+
+
 
 createTables();
 

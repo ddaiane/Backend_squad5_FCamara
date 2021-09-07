@@ -30,11 +30,10 @@ async function connect() {
     global.connection = pool;
 
 
-
-    return pool.connect();
+    return pool;
   }
   
-  connect();
+
 
    
   module.exports = {connect};
