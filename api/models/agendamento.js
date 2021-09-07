@@ -52,30 +52,23 @@ async function alterarAgendamento(req, res) {
   }
 }
 
-async function listarAgendamentosEsc(id_usuario, id_escritorio) {
-  try {
-    const tabelaParaConsulta =
-      id_escritorio === 1 ? "agendasp" : "agendasantos";
 
-    const db = await connect();
-    const reservas = await db.query(
-      `SELECT * FROM ${tabelaParaConsulta} WHERE id_usuario = ${id_usuario}`
-    );
-    return reservas.rows;
-  } catch (err) {
-    return { error: true, message: err.message };
-  }
-}
+
 
 async function listarAgendamentos(req, res) {
   try {
-    const { id_usuario } = req.body;
-    const agendamentosSp = listarAgendamentosEsc(id_usuario, 1);
-    const agendamentosSn = listarAgendamentosEsc(id_usuario, 2);
+    const { id_usuario } = req.params;
+    const query = `
+    SELECT * FROM agendaSP where id_usuario=${id_usuario}
+    UNION
+    SELECT * FROM agendasantos where id_usuario=${id_usuario}`;
 
+    const db = await connect();
+    const resultado = await db.query(query);
+    
     res
       .status(200)
-      .json({ escritorioSp: agendamentosSp, escritorioSn: agendamentosSn });
+      .json(resultado.rows);
   } catch (err) {
     res.json({ error: true, message: err.message });
   }
