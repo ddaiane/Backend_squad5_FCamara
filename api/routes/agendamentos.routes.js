@@ -10,6 +10,6 @@ const {
 router.post("/agendamento", criarAgendamento);
 router.delete("/agendamento", excluirAgendamento);
 router.patch("/agendamento", alterarAgendamento);
-router.get("/agendamento", listarAgendamentos);
+router.get("/:id_usuario", listarAgendamentos);
 
 module.exports = router;
