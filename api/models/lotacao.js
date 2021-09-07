@@ -1,25 +1,22 @@
 const { connect } = require("../DB/db.js");
 
+
+//funcao que entrega todos dados de lotacao do escritorio solicitado (capacidade, porcentagem permitida e vagas)
 async function consultaCapacidadeEscritorio(req, res) {
   try {
-    const { id_escritorio } = req.body;
+    const { id_escritorio } = req.params;
 
     const db = await connect();
     const capacidadeLocal = await db.query(
-      `SELECT capacidade, porcentagem_permitida FROM lotacao WHERE id_escritorio = ${id_escritorio}`
+      `SELECT * FROM lotacao WHERE id_escritorio = ${id_escritorio}`
     );
-
-    // res.json({
-    //   capacidade:
-    //     capacidadeLocal.rows[0].capacidade *
-    //     capacidadeLocal.rows[0].porcentagem_permitida,
-    // });
 
     res.json(capacidadeLocal.rows);
   } catch (err) {
     res.json({ error: true, message: err.message });
   }
 }
+
 
 async function alterarCapacidadeEscritorio(req, res) {
   try {
