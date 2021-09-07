@@ -2,7 +2,7 @@
 
 tecnologias utilizadas: nodejs, express e banco de dados postgreSQL
 
-*desenvolvimento ainda em estágio inicial*
+*desenvolvimento na branch development*
 
 **instruções:**
 - clonar o repositório
