@@ -5,7 +5,7 @@ const {
   excluirAgendamento,
   alterarAgendamento,
   listarAgendamentos,
-} = require("../models/agendamento");
+} = require("../controllers/agendamento");
 
 router.post("/", criarAgendamento);
 router.patch("/", alterarAgendamento);

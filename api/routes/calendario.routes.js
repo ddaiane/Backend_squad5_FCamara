@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const {listarTodosAgendamentos} = require("../models/calendario.js");
+const {listarTodosAgendamentos} = require("../controllers/calendario.js");
 
 router.get("/:id_escritorio&:mes&:ano", listarTodosAgendamentos);
 
