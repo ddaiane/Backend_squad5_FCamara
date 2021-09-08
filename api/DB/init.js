@@ -1,76 +1,107 @@
 //cria tabelas caso não existam no banco
 
-const { connect } = require('./db.js');
+const { Sequelize } = require("sequelize");
+const database = require("./db");
 
-async function createTables() {   
-     
-    await usuario();
-    await agendaSP();
-    await agendaSantos();
-    await lotacao();
+const Usuario = database.define("usuario", {
+  id: {
+    type: Sequelize.INTEGER,
+    autoIncrement: true,
+    allowNull: false,
+    primaryKey: true,
+  },
+  nome: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  email: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  senha: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  isAdmin: {
+    type: Sequelize.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+  },
+});
 
-}
+const AgendaSp = database.define("agendasp", {
+  id_agendamento: {
+    type: Sequelize.INTEGER,
+    autoIncrement: true,
+    allowNull: false,
+    primaryKey: true,
+  },
+  id_usuario: {
+    type: Sequelize.INTEGER,
+    autoIncrement: false,
+    allowNull: false,
+    primaryKey: true,
+  },
+  id_escritorio: {
+    type: Sequelize.INTEGER,
+    defaultValue: 1,
+  },
+  data: {
+    type: Sequelize.DATE,
+    allowNull: false,
+  },
+});
 
-async function usuario() {
-    const db = await connect();
-    
-    const query = `CREATE TABLE IF NOT EXISTS USUARIO (
-        id  SERIAL PRIMARY KEY,
-        nome VARCHAR(255) NOT NULL,        
-        email VARCHAR(200) NOT NULL,
-        senha VARCHAR(20) NOT NULL,
-        isAdmin BOOLEAN DEFAULT false)`;
+const AgendaSantos = database.define("agendasantos", {
+  id_agendamento: {
+    type: Sequelize.INTEGER,
+    autoIncrement: true,
+    allowNull: false,
+    primaryKey: true,
+  },
+  id_usuario: {
+    type: Sequelize.INTEGER,
+    autoIncrement: false,
+    allowNull: false,
+    primaryKey: true,
+  },
+  id_escritorio: {
+    type: Sequelize.INTEGER,
+    defaultValue: 2,
+  },
+  data: {
+    type: Sequelize.DATE,
+    allowNull: false,
+  },
+});
 
-    
-        await db.query(query);
-     
-}
-
-async function agendaSP() {
-
-    const db = await connect();
-
-    const query = `CREATE TABLE IF NOT EXISTS AGENDASP (
-        id_agendamento  SERIAL PRIMARY KEY,
-        id_usuario integer NOT NULL,
-        data date NOT NULL,
-        id_escritorio integer DEFAULT 1)`;
-
-        await db.query(query);
-    
-}
-
-async function agendaSantos() {
-
-    const db = await connect();
-
-    const query = `CREATE TABLE IF NOT EXISTS AGENDASANTOS (
-        id_agendamento  SERIAL PRIMARY KEY,
-        id_usuario integer NOT NULL,
-        data date NOT NULL,
-        id_escritorio integer DEFAULT 2)`;
-
-        await db.query(query);
-}
-
-async function lotacao() {
-
-    const db = await connect();
-
-    const query = `CREATE TABLE IF NOT EXISTS LOTACAO (
-        id_escritorio  SERIAL PRIMARY KEY,
-        nome_escritorio VARCHAR(100) NOT NULL,
-        capacidade integer NOT NULL,
-        porcentagem_permitida integer NOT NULL,
-        vagas integer NOT NULL)`;
-
-        await db.query(query);
-}
-
-
-
-createTables();
+const Lotacao = database.define("lotacao", {
+    id_escritorio: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+    },
+    nome_escritorio: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    capacidade: {
+      type: Sequelize.INTEGER,
+      allowNull: false
+    },
+    porcentagem_permitida: {
+      type: Sequelize.INTEGER,
+      allowNull: false
+    },
+    vagas: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
+    },
+  });
 
 module.exports = {
-    createTables
+  Usuario,
+  AgendaSantos,
+  AgendaSp,
+  Lotacao
 };
