@@ -1,12 +1,22 @@
-const { connect } = require("../DB/db.js");
+
+const {
+  QueryTypes
+} = require('sequelize');
+const db = require("../DB/db");
 
 async function criarAgendamento(req, res) {
   try {
-    const { id_escritorio, id_usuario, data } = req.body;
+    const {
+      id_escritorio,
+      id_usuario,
+      data
+    } = req.body;
 
     //Verificação se todos os campos estão presentes, mensagem para o front
-    if(!id_escritorio || !id_usuario || !data){
-      return res.status(400).json({message: "Todos os campos são obrigatórios"});
+    if (!id_escritorio || !id_usuario || !data) {
+      return res.status(400).json({
+        message: "Todos os campos são obrigatórios"
+      });
     }
 
     const tabelaParaConsulta =
@@ -17,70 +27,118 @@ async function criarAgendamento(req, res) {
       `INSERT INTO ${tabelaParaConsulta} (id_usuario, data) VALUES(${id_usuario}, ${data}`
     );
 
-    res.status(201).json({ mensagem: true });
+    res.status(201).json({
+      mensagem: true
+    });
   } catch (err) {
-    res.json({ error: true, message: err.message });
+    res.json({
+      error: true,
+      message: err.message
+    });
   }
 }
 
 async function excluirAgendamento(req, res) {
   try {
-    const { id_agendamento, id_escritorio } = req.params;
+    const {
+      id_agendamento,
+      id_escritorio
+    } = req.params;
 
     //Verificação se todos os campos estão presentes, mensagem para o front
-    if(!id_escritorio || !id_agendamento){
-      return res.status(400).json({message: "Todos os campos são obrigatórios"});
+    if (!id_escritorio || !id_agendamento) {
+      return res.status(400).json({
+        message: "Todos os campos são obrigatórios"
+      });
     }
 
     const tabelaParaConsulta =
       id_escritorio === "1" ? "agendasp" : "agendasantos";
 
     const db = await connect();
-    const resultado = await db.query(
+    await db.query(
       `DELETE FROM ${tabelaParaConsulta} WHERE id_agendamento=${id_agendamento} RETURNING data`
     );
     //retorna true ou false pra confirmar se deletou no bd
     if (resultado.rowCount === 0) {
-      res.json({ result: "false" });
+      res.json({
+        result: "false"
+      });
     } else if (resultado.rowCount === 1) {
-      res.json({ result: "true", "data deletada": resultado.rows });
+      res.json({
+        result: "true",
+        "data deletada": resultado.rows
+      });
     }
   } catch (err) {
-    res.json({ error: true, message: err.message });
+    res.json({
+      error: true,
+      message: err.message
+    });
   }
 }
 
+//altera data. dados no body da request. funcionando
+//localhost:3000/api/agendamentos/
 async function alterarAgendamento(req, res) {
   try {
-    const { id_agendamento, id_escritorio, data: novaData } = req.body;
+    const {
+      id_agendamento,
+      id_escritorio,
+      data: novaData
+    } = req.body;
 
     //Verificação se todos os campos estão presentes, mensagem para o front
-    if(!id_escritorio || !id_agendamento || !novaData){
-      return res.status(400).json({message: "Todos os campos são obrigatórios"});
+    if (!id_escritorio || !id_agendamento || !novaData) {
+      return res.status(400).json({
+        message: "Todos os campos são obrigatórios"
+      });
     }
+
+    //Verificação se parametros enviados sao numeros
+  if (typeof id_escritorio != 'number' || typeof id_agendamento != 'number') {
+    return res.status(400).json({ message: "ids devem ser number" });
+  }
+
+  //verifica se id_escritorio é de um escritorio valido
+  if(id_escritorio<1 || id_escritorio>2)
+  {
+    return res.status(400).json({ message: "id_escritorio invalido" });
+  }
 
     const tabelaParaConsulta =
       id_escritorio === 1 ? "agendasp" : "agendasantos";
 
-    const db = await connect();
     await db.query(
-      `UPDATE ${tabelaParaConsulta} SET data = ${novaData} WHERE id_agendamento = ${id_agendamento}`
+      `UPDATE ${tabelaParaConsulta} SET data = '${novaData}' WHERE id_agendamento = ${id_agendamento}`, {
+        type: QueryTypes.SELECT
+      }
     );
 
-    res.status(200).json({ mensagem: true });
+    res.status(200).json({
+      mensagem: true
+    });
   } catch (err) {
-    res.json({ error: true, message: err.message });
+    res.json({
+      error: true,
+      message: err.message
+    });
   }
 }
 
-//retorna todos os agendamentos FUTUROS
+
+//retorna todos os agendamentos FUTUROS do usuario em ordem de data
+//localhost:3000/api/agendamentos/:id_usuario funcionando
 async function listarAgendamentos(req, res) {
   try {
-    const { id_usuario } = req.params;
-
-    //Verificação se todos os campos estão presentes, mensagem para o front
-    if(!id_usuario){
-      return res.status(400).json({message: "Todos os campos são obrigatórios"});
+    const {
+      id_usuario
+    } = req.params;
+    //Verificação se parametro enviado é um numero
+    if (typeof id_usuario != 'number') {
+      return res.status(400).json({
+        message: "id invalido"
+      });
     }
 
     const query = `
@@ -89,14 +147,21 @@ async function listarAgendamentos(req, res) {
     SELECT * FROM agendasantos where id_usuario=${id_usuario} AND data >= now()
     ORDER BY data`;
 
-    const db = await connect();
-    const resultado = await db.query(query);
+    const resultado = await db.query(query, {
+      type: QueryTypes.SELECT
+    });
 
-    res.status(200).json(resultado.rows);
+    res.status(200).json(resultado);
   } catch (err) {
-    res.json({ error: true, message: err.message });
+    res.json({
+      error: true,
+      message: err.message
+    });
   }
 }
+
+
+
 
 module.exports = {
   criarAgendamento,
