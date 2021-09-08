@@ -3,6 +3,7 @@ const db = require("../DB/db");
 
 //funcao que entrega todos dados de lotacao do escritorio solicitado (capacidade, porcentagem permitida e vagas)
 //localhost:3000/api/lotacao/:id_escritorio
+//funcionando
 async function consultaCapacidadeEscritorio(req, res) {
   try {
     const {
@@ -31,8 +32,11 @@ async function consultaCapacidadeEscritorio(req, res) {
   }
 }
 
-//função para alterar a capacidade de um escritorio
+//função para alterar a capacidade de um escritorio. id do escritorio nos parametros e o resto no body
+//funcionando
 //localhost:3000/api/lotacao/:id_escritorio
+
+//TO DO: atualizar tbm o numero de vagas!
 async function alterarCapacidadeEscritorio(req, res) {
   try {
     const {
@@ -52,13 +56,13 @@ async function alterarCapacidadeEscritorio(req, res) {
       return res.status(400).json({ message: "Nada a alterar" });
     }
 
-      //Verificação se id_escritorio é valido
-      const verificaEscritorio = parseInt(id_escritorio);
-      if (verificaEscritorio < 1 || verificaEscritorio > 2) {
-        return res.status(400).json({
-          message: "id_escritorio invalido"
-        });
-      }
+    const validaEscritorio = verificaEscritorio(id_escritorio);
+    if (!validaEscritorio){
+      return res.status(400).json({
+        message: "id escritorio invalido",
+      });
+    }
+
     const conferenciaAdmin = await db.query(
       `SELECT isAdmin FROM usuario WHERE id = ${id_usuario}`,
       { type: QueryTypes.SELECT }
@@ -101,6 +105,21 @@ async function alterarCapacidadeEscritorio(req, res) {
         });
       }
     }
+
+    //função de verificacao
+function verificaEscritorio(id_escritorio) {
+  //Verificação se id_escritorio é valido
+  let idVerifica;
+  if (typeof id_escritorio != "number") {
+    idVerifica = parseInt(id_escritorio);
+    }
+  else { idVerifica = id_escritorio;}
+  
+  if (idVerifica > 0 && idVerifica <= 2) {
+    return true;
+  }
+  else {return false;}
+}
 
     module.exports = {
       consultaCapacidadeEscritorio,

@@ -22,8 +22,10 @@ async function criarAgendamento(req, res) {
       });
     }
 
+    console.log(id_escritorio);
+    console.log(typeof id_escritorio);
     const tabelaParaConsulta =
-      id_escritorio === 1 ? "agendasp" : "agendasantos";
+      id_escritorio == 1 ? "agendasp" : "agendasantos";
 
     const resultado = await db.query(
       `INSERT INTO ${tabelaParaConsulta} (id_usuario, data) VALUES(${id_usuario}, '${data}') RETURNING *`,
@@ -43,7 +45,8 @@ async function criarAgendamento(req, res) {
 //parametros no body. deleta agendamento e retorna a data do agendamento cancelado. funcionando
 async function excluirAgendamento(req, res) {
   try {
-    const { id_agendamento, id_escritorio } = req.body;
+    
+    const { id_agendamento, id_escritorio } = req.params;
 
     //Verificação se todos os campos estão presentes, mensagem para o front
     if (!id_escritorio || !id_agendamento) {
@@ -80,7 +83,8 @@ async function excluirAgendamento(req, res) {
 //localhost:3000/api/agendamentos/
 async function alterarAgendamento(req, res) {
   try {
-    const { id_agendamento, id_escritorio, data: novaData } = req.body;
+    const { id_agendamento, data: novaData } = req.body;
+    const { id_escritorio } = req.params;
 
     //Verificação se todos os campos estão presentes, mensagem para o front
     if (!id_escritorio || !id_agendamento || !novaData) {
@@ -146,6 +150,7 @@ function verificaEscritorio(id_escritorio) {
   let idVerifica;
   if (typeof id_escritorio != "number") {
     idVerifica = parseInt(id_escritorio);
+    console.log("entrou parse " + typeof idVerifica);
     }
   else { idVerifica = id_escritorio;}
   
