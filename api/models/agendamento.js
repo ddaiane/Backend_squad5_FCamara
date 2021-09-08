@@ -159,12 +159,7 @@ async function listarAgendamentos(req, res) {
     const {
       id_usuario
     } = req.params;
-    //Verificação se parametro enviado é um numero
-    if (typeof id_usuario != 'number') {
-      return res.status(400).json({
-        message: "id invalido"
-      });
-    }
+    
 
     const query = `
     SELECT * FROM agendaSP where id_usuario=${id_usuario} AND data >= now()
