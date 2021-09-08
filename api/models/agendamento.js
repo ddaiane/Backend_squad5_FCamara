@@ -1,9 +1,10 @@
-
 const {
   QueryTypes
 } = require('sequelize');
 const db = require("../DB/db");
 
+//localhost:3000/api/agendamentos
+//parametros no body. cria retorna a linha criada no banco. funcionando
 async function criarAgendamento(req, res) {
   try {
     const {
@@ -19,17 +20,27 @@ async function criarAgendamento(req, res) {
       });
     }
 
+    //Verificação se id_escritorio é valido
+    if (typeof id_escritorio != 'number' || typeof id_usuario != 'number') {
+      return res.status(400).json({
+        message: "id deve ser number"
+      });
+    }
+    if (id_escritorio < 1 || id_escritorio > 2) {
+      return res.status(400).json({
+        message: "id_escritorio invalido"
+      });
+    }
+
     const tabelaParaConsulta =
       id_escritorio === 1 ? "agendasp" : "agendasantos";
 
-    const db = await connect();
-    await db.query(
-      `INSERT INTO ${tabelaParaConsulta} (id_usuario, data) VALUES(${id_usuario}, ${data}`
+    const resultado = await db.query(
+      `INSERT INTO ${tabelaParaConsulta} (id_usuario, data) VALUES(${id_usuario}, '${data}') RETURNING *`,
+      { type: QueryTypes.INSERT }
     );
 
-    res.status(201).json({
-      mensagem: true
-    });
+    res.status(201).json(resultado[0]);
   } catch (err) {
     res.json({
       error: true,
@@ -38,12 +49,15 @@ async function criarAgendamento(req, res) {
   }
 }
 
+
+//localhost:3000/api/agendamentos/
+//parametros no body. deleta agendamento e retorna a data do agendamento cancelado. funcionando
 async function excluirAgendamento(req, res) {
   try {
     const {
       id_agendamento,
       id_escritorio
-    } = req.params;
+    } = req.body;
 
     //Verificação se todos os campos estão presentes, mensagem para o front
     if (!id_escritorio || !id_agendamento) {
@@ -52,24 +66,30 @@ async function excluirAgendamento(req, res) {
       });
     }
 
-    const tabelaParaConsulta =
-      id_escritorio === "1" ? "agendasp" : "agendasantos";
-
-    const db = await connect();
-    await db.query(
-      `DELETE FROM ${tabelaParaConsulta} WHERE id_agendamento=${id_agendamento} RETURNING data`
-    );
-    //retorna true ou false pra confirmar se deletou no bd
-    if (resultado.rowCount === 0) {
-      res.json({
-        result: "false"
-      });
-    } else if (resultado.rowCount === 1) {
-      res.json({
-        result: "true",
-        "data deletada": resultado.rows
+    //Verificação se parametros enviados sao numeros
+    if (typeof id_escritorio != 'number') {
+      return res.status(400).json({
+        message: "id deve ser number"
       });
     }
+
+    //verifica se id_escritorio é de um escritorio valido
+    if (id_escritorio < 1 || id_escritorio > 2) {
+      return res.status(400).json({
+        message: "id_escritorio invalido"
+      });
+    }
+
+    const tabelaParaConsulta =
+      id_escritorio === 1 ? "agendasp" : "agendasantos";
+
+    const resultado = await db.query(
+      `DELETE FROM ${tabelaParaConsulta} WHERE id_agendamento=${id_agendamento} RETURNING data`,
+      { type: QueryTypes.DELETE }
+    );
+
+    res.json(resultado);
+    
   } catch (err) {
     res.json({
       error: true,
@@ -78,7 +98,9 @@ async function excluirAgendamento(req, res) {
   }
 }
 
-//altera data. dados no body da request. funcionando
+
+
+//altera data. dados no body da request. retorna nova data salva. funcionando
 //localhost:3000/api/agendamentos/
 async function alterarAgendamento(req, res) {
   try {
@@ -96,28 +118,31 @@ async function alterarAgendamento(req, res) {
     }
 
     //Verificação se parametros enviados sao numeros
-  if (typeof id_escritorio != 'number' || typeof id_agendamento != 'number') {
-    return res.status(400).json({ message: "ids devem ser number" });
-  }
+    if (typeof id_escritorio != 'number') {
+      return res.status(400).json({
+        message: "id deve ser number"
+      });
+    }
 
-  //verifica se id_escritorio é de um escritorio valido
-  if(id_escritorio<1 || id_escritorio>2)
-  {
-    return res.status(400).json({ message: "id_escritorio invalido" });
-  }
+    //verifica se id_escritorio é de um escritorio valido
+    if (id_escritorio < 1 || id_escritorio > 2) {
+      return res.status(400).json({
+        message: "id_escritorio invalido"
+      });
+    }
 
     const tabelaParaConsulta =
       id_escritorio === 1 ? "agendasp" : "agendasantos";
 
-    await db.query(
-      `UPDATE ${tabelaParaConsulta} SET data = '${novaData}' WHERE id_agendamento = ${id_agendamento}`, {
-        type: QueryTypes.SELECT
+    const resultado = await db.query(
+      `UPDATE ${tabelaParaConsulta} SET data = '${novaData}' WHERE id_agendamento = ${id_agendamento} RETURNING data`, {
+        type: QueryTypes.UPDATE
       }
     );
 
-    res.status(200).json({
-      mensagem: true
-    });
+    res.status(200).json(
+      resultado[0]
+    );
   } catch (err) {
     res.json({
       error: true,
