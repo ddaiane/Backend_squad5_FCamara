@@ -1,6 +1,7 @@
 const { QueryTypes } = require("sequelize");
 const db = require("../DB/db");
 
+
 //localhost:3000/api/agendamentos
 //parametros no body. cria retorna a linha criada no banco. funcionando
 async function criarAgendamento(req, res) {
@@ -14,15 +15,10 @@ async function criarAgendamento(req, res) {
       });
     }
 
-    //Verificação se id_escritorio é valido
-    if (typeof id_escritorio != "number" || typeof id_usuario != "number") {
+    const validaEscritorio = verificaEscritorio(id_escritorio);
+    if (!validaEscritorio){
       return res.status(400).json({
-        message: "id deve ser number",
-      });
-    }
-    if (id_escritorio < 1 || id_escritorio > 2) {
-      return res.status(400).json({
-        message: "id_escritorio invalido",
+        message: "id escritorio invalido",
       });
     }
 
@@ -56,17 +52,10 @@ async function excluirAgendamento(req, res) {
       });
     }
 
-    //Verificação se parametros enviados sao numeros
-    if (typeof id_escritorio != "number") {
+    const validaEscritorio = verificaEscritorio(id_escritorio);
+    if (!validaEscritorio){
       return res.status(400).json({
-        message: "id deve ser number",
-      });
-    }
-
-    //verifica se id_escritorio é de um escritorio valido
-    if (id_escritorio < 1 || id_escritorio > 2) {
-      return res.status(400).json({
-        message: "id_escritorio invalido",
+        message: "id escritorio invalido",
       });
     }
 
@@ -100,17 +89,10 @@ async function alterarAgendamento(req, res) {
       });
     }
 
-    //Verificação se parametros enviados sao numeros
-    if (typeof id_escritorio != "number") {
+    const validaEscritorio = verificaEscritorio(id_escritorio);
+    if (!validaEscritorio){
       return res.status(400).json({
-        message: "id deve ser number",
-      });
-    }
-
-    //verifica se id_escritorio é de um escritorio valido
-    if (id_escritorio < 1 || id_escritorio > 2) {
-      return res.status(400).json({
-        message: "id_escritorio invalido",
+        message: "id escritorio invalido",
       });
     }
 
@@ -123,8 +105,7 @@ async function alterarAgendamento(req, res) {
         type: QueryTypes.UPDATE,
       }
     );
-
-    res.status(200).json(resultado[0]);
+    res.status(200).json(resultado);
   } catch (err) {
     res.json({
       error: true,
@@ -138,12 +119,7 @@ async function alterarAgendamento(req, res) {
 async function listarAgendamentos(req, res) {
   try {
     const { id_usuario } = req.params;
-    //Verificação se parametro enviado é um numero
-    if (typeof id_usuario != "number") {
-      return res.status(400).json({
-        message: "id invalido",
-      });
-    }
+    
 
     const query = `
     SELECT * FROM agendaSP where id_usuario=${id_usuario} AND data >= now()
@@ -162,6 +138,21 @@ async function listarAgendamentos(req, res) {
       message: err.message,
     });
   }
+}
+
+//função de verificacao
+function verificaEscritorio(id_escritorio) {
+  //Verificação se id_escritorio é valido
+  let idVerifica;
+  if (typeof id_escritorio != "number") {
+    idVerifica = parseInt(id_escritorio);
+    }
+  else { idVerifica = id_escritorio;}
+  
+  if (idVerifica > 0 && idVerifica <= 2) {
+    return true;
+  }
+  else {return false;}
 }
 
 module.exports = {
