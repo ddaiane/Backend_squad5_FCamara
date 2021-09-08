@@ -2,7 +2,7 @@ const { Sequelize } = require("sequelize");
 
 //postgres://usuario:senha@servidor:porta/banco
 const sequelize = new Sequelize(
-  "postgres://hesjocpg:2eQObwu3fdrP-i_NsrVkMaXfuOeIZCh2@kesavan.db.elephantsql.com:5432/hesjocpg",
+  "link_banco",
   { dialect: "postgres" }
 );
 
