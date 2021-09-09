@@ -1,0 +1,303 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "REST API",
+    "description": ""
+  },
+  "host": "localhost:3000",
+  "basePath": "/api/",
+  "tags": [],
+  "schemes": ["http"],
+  "consumes": [],
+  "produces": [],
+  "paths": {
+    "/agendamentos": {
+      "post": {
+        "tags": [],
+        "description": "Criar agendamento",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id_escritorio": {
+                  "example": "1"
+                },
+                "id_usuario": {
+                  "example": "1"
+                },
+                "data": {
+                  "example": "2021-10-30"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/agendamentos/{id_usuario}": {
+      "get": {
+        "tags": [],
+        "description": "Lista os agendamentos do usuário",
+        "parameters": [
+          {
+            "name": "id_usuario",
+            "in": "path",
+            "required": true,
+            "type": "number",
+            "example": "1"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/agendamentos/{id_escritorio}": {
+      "patch": {
+        "tags": [],
+        "description": "Altera um agendamento do usuário",
+        "parameters": [
+          {
+            "name": "id_escritorio",
+            "in": "path",
+            "required": true,
+            "type": "number",
+            "example": "1"
+          },
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id_agendamento": {
+                  "example": "12"
+                },
+                "data": {
+                  "example": "2021-10-30"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/agendamentos/{id_escritorio}/{id_agendamento}": {
+      "delete": {
+        "tags": [],
+        "description": "Excluir um agendamento do usuário",
+        "parameters": [
+          {
+            "name": "id_escritorio",
+            "in": "path",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "name": "id_agendamento",
+            "in": "path",
+            "required": true,
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/calendario/{id_escritorio}/{mes}/{ano}": {
+      "get": {
+        "tags": [],
+        "description": "Retorna todos os agendamentos do escritório do mês e ano informado",
+        "parameters": [
+          {
+            "name": "id_escritorio",
+            "in": "path",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "name": "mes",
+            "in": "path",
+            "required": true,
+            "type": "number",
+            "example": "08"
+          },
+          {
+            "name": "ano",
+            "in": "path",
+            "required": true,
+            "type": "number",
+            "example": "2021"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/lotacao/{id_escritorio}": {
+      "get": {
+        "tags": [],
+        "description": "Retorna a capacidade do escritório informado",
+        "parameters": [
+          {
+            "name": "id_escritorio",
+            "in": "path",
+            "required": true,
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/lotacao/{id_escritorio}": {
+      "patch": {
+        "tags": [],
+        "description": "Altera dados sobre o escritório informado",
+        "parameters": [
+          {
+            "name": "id_escritorio",
+            "in": "path",
+            "required": true,
+            "type": "number",
+            "example": "1"
+          },
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id_usuario": {
+                  "example": "12"
+                },
+                "capacidade": {
+                  "example": "100"
+                },
+                "porcentagem_permitida": {
+                  "example": "40"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/usuarios/": {
+      "get": {
+        "tags": [],
+        "description": "Retorna todos os usuários cadastrados",
+        "parameters": [
+          {
+            "name": "id_usuario",
+            "in": "path",
+            "required": true,
+            "type": "number",
+            "example": "1"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/usuarios/{id_usuario}": {
+      "get": {
+        "tags": [],
+        "description": "Retorna dados do usuário solicitado",
+        "parameters": [
+          {
+            "name": "id_usuario",
+            "in": "path",
+            "required": true,
+            "type": "number",
+            "example": "1"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {}
+}
