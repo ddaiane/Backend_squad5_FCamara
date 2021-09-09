@@ -1,5 +1,6 @@
 const { QueryTypes } = require("sequelize");
 const db = require("../DB/db");
+const { verificaEscritorio } = require("./uteis");
 
 //retorna todos agendamentos FUTUROS de um determinado mes/ano em um determinado escritorio
 //localhost:3000/api/calendario/:id_escritorio/:mes/:ano
@@ -15,8 +16,7 @@ async function listarTodosAgendamentos(req, res) {
         .json({ message: "Todos os campos são obrigatórios" });
     }
 
-    const validaEscritorio = verificaEscritorio(id_escritorio);
-    if (!validaEscritorio){
+    if (!verificaEscritorio(id_escritorio)){
       return res.status(400).json({
         message: "id escritorio invalido",
       });
@@ -44,19 +44,5 @@ async function listarTodosAgendamentos(req, res) {
   }
 }
 
-    //função de verificacao
-    function verificaEscritorio(id_escritorio) {
-      //Verificação se id_escritorio é valido
-      let idVerifica;
-      if (typeof id_escritorio != "number") {
-        idVerifica = parseInt(id_escritorio);
-        }
-      else { idVerifica = id_escritorio;}
-      
-      if (idVerifica > 0 && idVerifica <= 2) {
-        return true;
-      }
-      else {return false;}
-    }
 
 module.exports = { listarTodosAgendamentos };
