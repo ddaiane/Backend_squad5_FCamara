@@ -178,22 +178,29 @@ async function listarAgendamentos(req, res) {
       id_usuario
     } = req.params;
 
-
-    const query = `
-    SELECT * FROM agendaSP where id_usuario=${id_usuario} AND data >= now()
-    UNION
-    SELECT * FROM agendasantos where id_usuario=${id_usuario} AND data >= now()
-    ORDER BY data`;
-
-    const resultado = await db.query(query, {
-      type: QueryTypes.SELECT,
-    });
-
-    res.status(200).json(resultado);
+    if (await conferenciaDeUsuario(id_usuario)) {
+      const query = `
+      SELECT * FROM agendaSP where id_usuario=${id_usuario} AND data >= now()
+      UNION
+      SELECT * FROM agendasantos where id_usuario=${id_usuario} AND data >= now()
+      ORDER BY data`;
+  
+      const resultado = await db.query(query, {
+        type: QueryTypes.SELECT,
+      });
+  
+      res.status(200).json(resultado);
+    }
+    else {
+      res.status(404).json({
+        message: "usuario nao existe"
+      });
+    }
+    
   } catch (err) {
     res.status(404).json({
       error: true,
-      message: err.message,
+      message: err.message
     });
   }
 }
