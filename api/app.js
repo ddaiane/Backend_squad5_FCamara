@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var app = express();
+var swaggerUi = require("swagger-ui-express");
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -41,7 +42,7 @@ app.use('/api/agendamentos', agendamentosRouter);
 app.use('/api/calendario', calendarioRouter);
 app.use('/api/lotacao', lotacaoRouter);
 
-
+app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(require("./swagger.json")));
 
 
 
