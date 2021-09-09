@@ -1,5 +1,6 @@
 const { QueryTypes } = require("sequelize");
 const db = require("../DB/db");
+const { verificaEscritorio } = require("./uteis");
 
 //funcao que entrega todos dados de lotacao do escritorio solicitado (capacidade, porcentagem permitida e vagas)
 //localhost:3000/api/lotacao/:id_escritorio
@@ -10,11 +11,9 @@ async function consultaCapacidadeEscritorio(req, res) {
       id_escritorio
     } = req.params;
 
-    //verifica se é um escritorio que existe
-    const idVerifica = parseInt(id_escritorio);
-    if (idVerifica < 1 || idVerifica > 2) {
+    if (!verificaEscritorio(id_escritorio)) {
       return res.status(400).json({
-        message: "id_escritorio invalido"
+        message: "id escritorio invalido",
       });
     }
 
@@ -23,9 +22,9 @@ async function consultaCapacidadeEscritorio(req, res) {
       { type: QueryTypes.SELECT }
     );
 
-    res.json(capacidadeLocal);
+    res.status(200).json(capacidadeLocal);
   } catch (err) {
-    res.json({
+    res.status(400).json({
       error: true,
       message: err.message
     });
@@ -35,8 +34,6 @@ async function consultaCapacidadeEscritorio(req, res) {
 //função para alterar a capacidade de um escritorio. id do escritorio nos parametros e o resto no body
 //funcionando
 //localhost:3000/api/lotacao/:id_escritorio
-
-//TO DO: atualizar tbm o numero de vagas!
 async function alterarCapacidadeEscritorio(req, res) {
   try {
     const {
@@ -56,8 +53,7 @@ async function alterarCapacidadeEscritorio(req, res) {
       return res.status(400).json({ message: "Nada a alterar" });
     }
 
-    const validaEscritorio = verificaEscritorio(id_escritorio);
-    if (!validaEscritorio){
+    if (!verificaEscritorio(id_escritorio)) {
       return res.status(400).json({
         message: "id escritorio invalido",
       });
@@ -68,6 +64,7 @@ async function alterarCapacidadeEscritorio(req, res) {
       { type: QueryTypes.SELECT }
     );
 
+    console.log(conferenciaAdmin[0].isadmin);
 
       if (conferenciaAdmin[0].isadmin === true) {
         if (novaCapacidade) {
@@ -102,34 +99,21 @@ async function alterarCapacidadeEscritorio(req, res) {
             message: "Alterado com sucesso"
           });
         } else {
-          return res.json({
+          return res.status(400).json({
             message: "Acesso negado"
           });
         }
 
 
       } catch (err) {
-        res.json({
+        res.status(400).json({
           error: true,
           message: err.message
         });
       }
     }
 
-    //função de verificacao
-function verificaEscritorio(id_escritorio) {
-  //Verificação se id_escritorio é valido
-  let idVerifica;
-  if (typeof id_escritorio != "number") {
-    idVerifica = parseInt(id_escritorio);
-    }
-  else { idVerifica = id_escritorio;}
-  
-  if (idVerifica > 0 && idVerifica <= 2) {
-    return true;
-  }
-  else {return false;}
-}
+ 
 
     module.exports = {
       consultaCapacidadeEscritorio,

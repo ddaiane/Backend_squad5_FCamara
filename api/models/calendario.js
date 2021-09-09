@@ -38,9 +38,9 @@ async function listarTodosAgendamentos(req, res) {
       return res.status(404).json({ reservas: false });
     }
 
-    res.json(reservas);
+    res.status(200).json(reservas);
   } catch (err) {
-    res.json({ error: true, message: err.message });
+    res.status(404).json({ error: true, message: err.message });
   }
 }
 

@@ -12,10 +12,10 @@ async function selectUsuarios(req, res) {
         type: QueryTypes.SELECT
       }
     );
-    res.json(usuarios);
+    res.status(200).json(usuarios);
   }
   catch (err) {
-    res.json({
+    res.status(404).json({
       error: true,
       message: err.message
     });
@@ -37,9 +37,9 @@ async function selectUmUsuario(req, res) {
       }
     );
 
-    res.json(usuario);
+    res.status(200).json(usuario);
   } catch (err) {
-    res.json({
+    res.status(404).json({
       error: true,
       message: err.message
     });

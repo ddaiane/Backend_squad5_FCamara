@@ -57,7 +57,7 @@ async function criarAgendamento(req, res) {
 
     res.status(201).json(resultado[0]);
   } catch (err) {
-    res.json({
+    res.status(404).json({
       error: true,
       message: err.message,
     });
@@ -101,9 +101,9 @@ async function excluirAgendamento(req, res) {
       }
     );
 
-    res.json(resultado);
+    res.status(200).json(resultado);
   } catch (err) {
-    res.json({
+    res.status(404).json({
       error: true,
       message: err.message,
     });
@@ -163,7 +163,7 @@ async function alterarAgendamento(req, res) {
     );
     res.status(200).json(resultado);
   } catch (err) {
-    res.json({
+    res.status(404).json({
       error: true,
       message: err.message,
     });
@@ -191,7 +191,7 @@ async function listarAgendamentos(req, res) {
 
     res.status(200).json(resultado);
   } catch (err) {
-    res.json({
+    res.status(404).json({
       error: true,
       message: err.message,
     });
