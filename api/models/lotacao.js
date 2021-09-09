@@ -74,12 +74,22 @@ async function alterarCapacidadeEscritorio(req, res) {
           await db.query(
             `UPDATE lotacao SET capacidade = ${novaCapacidade} WHERE id_escritorio = ${id_escritorio}`
           );
+          //atualiza tbm as vagas:
+          await db.query(
+            `update lotacao set vagas = (capacidade * porcentagem_permitida)/100
+            where id_escritorio = ${id_escritorio}`
+          );
         }
 
         if (novaPorcentagem) {
           if (novaPorcentagem <= 100 && novaPorcentagem > 0) {
             await db.query(
               `UPDATE lotacao SET porcentagem_permitida = ${novaPorcentagem} WHERE id_escritorio = ${id_escritorio}`
+            );
+            //atualiza vagas
+            await db.query(
+              `update lotacao set vagas = (capacidade * porcentagem_permitida)/100
+              where id_escritorio = ${id_escritorio}`
             );
           } else {
             return res.status(400).json({
