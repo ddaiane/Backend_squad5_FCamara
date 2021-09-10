@@ -49,7 +49,7 @@
         }
       }
     },
-    "/agendamentos/{id_usuario}": {
+    "/agendamentos/{id_usuario}/": {
       "get": {
         "tags": [],
         "description": "Lista os agendamentos do usuário",
