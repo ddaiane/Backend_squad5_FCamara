@@ -44,11 +44,6 @@ async function listarTodosAgendamentos(req, res) {
 }
 
 async function listarVagasPorDia(req, res) {
-  console.log("entra?");
-  //Pegar qual o escritório OK
-  //Pegar a capcidade do escritório OK
-  //Pegar os agendamentos do escritório nesse dia OK
-  //Fazer o JOIN para pegar a interseção entre capacidade e agendamento
   try {
     const { id_escritorio } = req.params;
     const { data } = req.body;
@@ -82,7 +77,7 @@ async function listarVagasPorDia(req, res) {
 
     const vagas = capacidade[0].vagas - Number(agendamentos[0].count);
 
-    res.status(200).json({vagas: vagas});
+    res.status(200).json({ vagas: vagas });
   } catch (err) {
     res.status(404).json({ error: true, message: err.message });
   }

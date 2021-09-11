@@ -183,7 +183,7 @@
         }
       }
     },
-    "/calendario/{id_escritorio}": {
+    "/calendario/vagas/{id_escritorio}": {
       "get": {
         "tags": [],
         "description": "Retorna as vagas disponíveis de um dia específico",
