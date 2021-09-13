@@ -49,7 +49,7 @@
         }
       }
     },
-    "/agendamentos/{id_usuario}/": {
+    "/agendamentos/{id_usuario}": {
       "get": {
         "tags": [],
         "description": "Lista os agendamentos do usuário",
@@ -183,6 +183,43 @@
         }
       }
     },
+    "/calendario/vagas/{id_escritorio}": {
+      "get": {
+        "tags": [],
+        "description": "Retorna as vagas disponíveis de um dia específico",
+        "parameters": [
+          {
+            "name": "id_escritorio",
+            "in": "path",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "example": "2021-09-12"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
     "/lotacao/{id_escritorio}": {
       "get": {
         "tags": [],
@@ -206,9 +243,7 @@
             "description": "Not Found"
           }
         }
-      }
-    },
-    "/lotacao/{id_escritorio}": {
+      },
       "patch": {
         "tags": [],
         "description": "Altera dados sobre o escritório informado",
@@ -250,7 +285,7 @@
             "description": "Not Found"
           }
         }
-      }
+      } 
     },
     "/usuarios/": {
       "get": {

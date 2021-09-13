@@ -37,7 +37,7 @@ var calendarioRouter = require('./routes/calendario.routes');
 var lotacaoRouter = require('./routes/lotacao.routes');
 
 //aponta rotas
-app.use('/api/usuarios', usuariosRouter); //debora, to botando pra nossas url serem com /api antes pra ficar mais claro pro pessoal do front e nao dar confusao com as rotas do react!
+app.use('/api/usuarios', usuariosRouter); 
 app.use('/api/agendamentos', agendamentosRouter);
 app.use('/api/calendario', calendarioRouter);
 app.use('/api/lotacao', lotacaoRouter);
@@ -60,7 +60,7 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.render(err.message.toString());
 });
 
 module.exports = app;
