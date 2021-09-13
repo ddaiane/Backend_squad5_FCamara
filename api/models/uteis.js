@@ -51,15 +51,17 @@ async function conferenciaDeUsuario(id_usuario) {
 }
 
 //função verificar se escritorio é valido
-function verificaEscritorio(id_escritorio) {
+async function verificaEscritorio(id_escritorio) {
   let idVerifica;
   if (typeof id_escritorio != "number") {
     idVerifica = parseInt(id_escritorio);
   } else {
     idVerifica = id_escritorio;
   }
+  const numEscritorios = await db.query (`select count(*) from lotacao`,
+  { type: QueryTypes.SELECT })
 
-  if (idVerifica > 0 && idVerifica <= 2) {
+  if (idVerifica > 0 && idVerifica <= numEscritorios[0]["count"]) {
     return true;
   } else {
     return false;

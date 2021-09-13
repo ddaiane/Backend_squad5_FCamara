@@ -6,6 +6,10 @@ var logger = require('morgan');
 var app = express();
 var swaggerUi = require("swagger-ui-express");
 
+//inicia a banco
+const initSQL = require('./DB/init');
+//createTables();
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
