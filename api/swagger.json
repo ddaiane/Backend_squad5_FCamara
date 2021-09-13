@@ -113,17 +113,11 @@
         }
       }
     },
-    "/agendamentos/{id_escritorio}/{id_agendamento}": {
+    "/agendamentos/{id_agendamento}": {
       "delete": {
         "tags": [],
         "description": "Excluir um agendamento do usuário",
         "parameters": [
-          {
-            "name": "id_escritorio",
-            "in": "path",
-            "required": true,
-            "type": "number"
-          },
           {
             "name": "id_agendamento",
             "in": "path",

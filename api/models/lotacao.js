@@ -7,9 +7,7 @@ const { verificaEscritorio } = require("./uteis");
 //funcionando
 async function consultaCapacidadeEscritorio(req, res) {
   try {
-    const {
-      id_escritorio
-    } = req.params;
+    const { id_escritorio } = req.params;
 
     if (!verificaEscritorio(id_escritorio)) {
       return res.status(400).json({
@@ -26,7 +24,7 @@ async function consultaCapacidadeEscritorio(req, res) {
   } catch (err) {
     res.status(400).json({
       error: true,
-      message: err.message
+      message: err.message,
     });
   }
 }
@@ -66,56 +64,52 @@ async function alterarCapacidadeEscritorio(req, res) {
 
     console.log(conferenciaAdmin[0].isadmin);
 
-      if (conferenciaAdmin[0].isadmin === true) {
-        if (novaCapacidade) {
+    if (conferenciaAdmin[0].isadmin === true) {
+      if (novaCapacidade) {
+        await db.query(
+          `UPDATE lotacao SET capacidade = ${novaCapacidade} WHERE id_escritorio = ${id_escritorio}`
+        );
+        //atualiza tbm as vagas:
+        await db.query(
+          `update lotacao set vagas = (capacidade * porcentagem_permitida)/100
+            where id_escritorio = ${id_escritorio}`
+        );
+      }
+
+      if (novaPorcentagem) {
+        if (novaPorcentagem <= 100 && novaPorcentagem > 0) {
           await db.query(
-            `UPDATE lotacao SET capacidade = ${novaCapacidade} WHERE id_escritorio = ${id_escritorio}`
+            `UPDATE lotacao SET porcentagem_permitida = ${novaPorcentagem} WHERE id_escritorio = ${id_escritorio}`
           );
-          //atualiza tbm as vagas:
+          //atualiza vagas
           await db.query(
             `update lotacao set vagas = (capacidade * porcentagem_permitida)/100
-            where id_escritorio = ${id_escritorio}`
-          );
-        }
-
-        if (novaPorcentagem) {
-          if (novaPorcentagem <= 100 && novaPorcentagem > 0) {
-            await db.query(
-              `UPDATE lotacao SET porcentagem_permitida = ${novaPorcentagem} WHERE id_escritorio = ${id_escritorio}`
-            );
-            //atualiza vagas
-            await db.query(
-              `update lotacao set vagas = (capacidade * porcentagem_permitida)/100
               where id_escritorio = ${id_escritorio}`
-            );
-          } else {
-            return res.status(400).json({
-              message: "porcentagem invalida"
-            });
-          }
-        }
-
-          res.status(200).json({
-            message: "Alterado com sucesso"
-          });
+          );
         } else {
           return res.status(400).json({
-            message: "Acesso negado"
+            message: "porcentagem invalida",
           });
         }
-
-
-      } catch (err) {
-        res.status(400).json({
-          error: true,
-          message: err.message
-        });
       }
+
+      res.status(200).json({
+        message: "Alterado com sucesso",
+      });
+    } else {
+      return res.status(400).json({
+        message: "Acesso negado",
+      });
     }
+  } catch (err) {
+    res.status(400).json({
+      error: true,
+      message: err.message,
+    });
+  }
+}
 
- 
-
-    module.exports = {
-      consultaCapacidadeEscritorio,
-      alterarCapacidadeEscritorio
-    };
+module.exports = {
+  consultaCapacidadeEscritorio,
+  alterarCapacidadeEscritorio,
+};

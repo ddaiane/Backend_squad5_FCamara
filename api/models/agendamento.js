@@ -5,7 +5,7 @@ const {
   conferenciaDeUsuario,
   buscaAgendamento,
   verificaEscritorio,
-  usuarioAgendamento
+  usuarioAgendamento,
 } = require("./uteis");
 
 //localhost:3000/api/agendamentos
@@ -38,10 +38,9 @@ async function criarAgendamento(req, res) {
         mensagem: "Você já possui reserva para esse dia",
       });
     }
-    const tabelaParaConsulta = id_escritorio == 1 ? "agendasp" : "agendasantos";
 
     const resultado = await db.query(
-      `INSERT INTO ${tabelaParaConsulta} (id_usuario, data) VALUES(${id_usuario}, '${data}') RETURNING *`,
+      `INSERT INTO agenda (id_usuario, data, id_escritorio) VALUES(${id_usuario}, '${data}', ${id_escritorio}) RETURNING *`,
       {
         type: QueryTypes.INSERT,
       }
@@ -60,26 +59,23 @@ async function criarAgendamento(req, res) {
 //parametros na url. deleta agendamento e retorna a data do agendamento cancelado. funcionando
 async function excluirAgendamento(req, res) {
   try {
-    const { id_agendamento, id_escritorio } = req.params;
+    const { id_agendamento } = req.params;
 
     //Verificação se todos os campos estão presentes, mensagem para o front
-    if (!id_escritorio || !id_agendamento) {
+    if (!id_agendamento) {
       return res.status(400).json({
         message: "Todos os campos são obrigatórios",
       });
     }
 
-    const tabelaParaConsulta =
-      id_escritorio === 1 ? "agendasp" : "agendasantos";
-
-    if (!(await buscaAgendamento(id_agendamento, tabelaParaConsulta))) {
+    if (!(await buscaAgendamento(id_agendamento, "agenda"))) {
       return res.status(404).json({
         message: "Agendamento não encontrado",
       });
     }
 
     const resultado = await db.query(
-      `DELETE FROM ${tabelaParaConsulta} WHERE id_agendamento=${id_agendamento} RETURNING data`,
+      `DELETE FROM agenda WHERE id_agendamento=${id_agendamento} RETURNING data`,
       {
         type: QueryTypes.DELETE,
       }
@@ -108,30 +104,23 @@ async function alterarAgendamento(req, res) {
       });
     }
 
-    const tabelaParaConsulta = id_escritorio == 1 ? "agendasp" : "agendasantos";
-
-    if (!(await buscaAgendamento(id_agendamento, tabelaParaConsulta))) {
+    if (!(await buscaAgendamento(id_agendamento, "agenda"))) {
       return res.status(404).json({
         message: "Agendamento não encontrado",
       });
     }
 
-    const id_usuario = await usuarioAgendamento(
-      id_agendamento,
-      tabelaParaConsulta
-    );
+    const id_usuario = await usuarioAgendamento(id_agendamento, "agenda");
 
     //verifica se nao ta alterando pra um dia que ja tem reserva
-    if (await conferenciaDeReservaRepetida(id_usuario, novaData, tabelaParaConsulta)) {
-      return res
-      .status(400)
-      .json({
-        mensagem: "Você já possui reserva para esse dia"
+    if (await conferenciaDeReservaRepetida(id_usuario, novaData, "agenda")) {
+      return res.status(400).json({
+        mensagem: "Você já possui reserva para esse dia",
       });
     }
 
     const resultado = await db.query(
-      `UPDATE ${tabelaParaConsulta} SET data = '${novaData}' WHERE id_agendamento = ${id_agendamento} RETURNING data`,
+      `UPDATE agenda SET data = '${novaData}' WHERE id_agendamento = ${id_agendamento} RETURNING data`,
       {
         type: QueryTypes.UPDATE,
       }
@@ -153,27 +142,23 @@ async function listarAgendamentos(req, res) {
 
     if (await conferenciaDeUsuario(id_usuario)) {
       const query = `
-      SELECT * FROM agendaSP where id_usuario=${id_usuario} AND data >= now()
-      UNION
-      SELECT * FROM agendasantos where id_usuario=${id_usuario} AND data >= now()
+      SELECT * FROM agenda where id_usuario=${id_usuario} AND data >= now()
       ORDER BY data`;
-  
+
       const resultado = await db.query(query, {
         type: QueryTypes.SELECT,
       });
-  
+
       res.status(200).json(resultado);
-    }
-    else {
+    } else {
       res.status(404).json({
-        message: "usuario nao existe"
+        message: "usuario nao existe",
       });
     }
-    
   } catch (err) {
     res.status(404).json({
       error: true,
-      message: err.message
+      message: err.message,
     });
   }
 }
@@ -182,5 +167,5 @@ module.exports = {
   criarAgendamento,
   excluirAgendamento,
   alterarAgendamento,
-  listarAgendamentos
+  listarAgendamentos,
 };

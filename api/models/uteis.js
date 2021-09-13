@@ -19,9 +19,8 @@ async function buscaAgendamento(id_agendamento, tabela) {
 
 async function conferenciaDeReservaRepetida(id_usuario, data) {
 
-  const santos = await verificaReservaData(id_usuario, data, "agendasantos");
-  const sp = await verificaReservaData(id_usuario, data, "agendasp");
-  if (!santos && !sp) {
+  const agendamento = await verificaReservaData(id_usuario, data, "agenda");
+  if (!agendamento) {
     return false;
   }
   return true;
