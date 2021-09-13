@@ -21,11 +21,9 @@ async function listarTodosAgendamentos(req, res) {
       });
     }
 
-    const tabelaParaConsulta =
-      id_escritorio === "1" ? "agendasp" : "agendasantos";
-
     const reservas = await db.query(
-      `SELECT * FROM ${tabelaParaConsulta} WHERE
+      `SELECT * FROM agenda WHERE
+      id_escritorio = ${id_escritorio} AND
       extract(month from data) = ${mes} AND
       extract (year from data) = ${ano} AND
       data >= now()
@@ -42,11 +40,11 @@ async function listarTodosAgendamentos(req, res) {
     res.status(404).json({ error: true, message: err.message });
   }
 }
-
+//localhost:3000/api/calendario/:id_escritorio?data=2021-09-12
 async function listarVagasPorDia(req, res) {
   try {
     const { id_escritorio } = req.params;
-    const { data } = req.body;
+    const { data } = req.query;
 
     //Verificação se todos os campos estão presentes, mensagem para o front
     if (!id_escritorio || !data) {
@@ -67,15 +65,14 @@ async function listarVagasPorDia(req, res) {
       { type: QueryTypes.SELECT }
     );
 
-    const tabelaParaConsulta =
-      id_escritorio === "1" ? "agendasp" : "agendasantos";
-
     const agendamentos = await db.query(
-      `SELECT count(*) FROM ${tabelaParaConsulta} WHERE data = '${data}' GROUP BY data`,
+      `SELECT count(*) FROM agenda WHERE id_escritorio = ${id_escritorio} AND data = '${data}' GROUP BY data`,
       { type: QueryTypes.SELECT }
     );
+    
+    const numeroAgendamentos = agendamentos[0] ? Number(agendamentos[0].count) : 0;
 
-    const vagas = capacidade[0].vagas - Number(agendamentos[0].count);
+    const vagas = capacidade[0].vagas - numeroAgendamentos;
 
     res.status(200).json({ vagas: vagas });
   } catch (err) {

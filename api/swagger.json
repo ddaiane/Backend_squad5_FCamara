@@ -195,16 +195,11 @@
             "type": "number"
           },
           {
-            "name": "obj",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "data": {
-                  "example": "2021-09-12"
-                }
-              }
-            }
+            "name": "data",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "example": "2021-09-12"
           }
         ],
         "responses": {
