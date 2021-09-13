@@ -69,12 +69,6 @@ async function excluirAgendamento(req, res) {
       });
     }
 
-    if (!verificaEscritorio(id_escritorio)) {
-      return res.status(400).json({
-        message: "id escritorio invalido",
-      });
-    }
-
     const tabelaParaConsulta =
       id_escritorio === 1 ? "agendasp" : "agendasantos";
 
@@ -111,12 +105,6 @@ async function alterarAgendamento(req, res) {
     if (!id_escritorio || !id_agendamento || !novaData) {
       return res.status(400).json({
         message: "Todos os campos são obrigatórios",
-      });
-    }
-
-    if (!verificaEscritorio(id_escritorio)) {
-      return res.status(400).json({
-        message: "id escritorio invalido",
       });
     }
 

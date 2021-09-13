@@ -15,12 +15,6 @@ async function listarTodosAgendamentos(req, res) {
         .json({ message: "Todos os campos são obrigatórios" });
     }
 
-    if (!verificaEscritorio(id_escritorio)) {
-      return res.status(400).json({
-        message: "id escritorio invalido",
-      });
-    }
-
     const reservas = await db.query(
       `SELECT * FROM agenda WHERE
       id_escritorio = ${id_escritorio} AND
@@ -51,12 +45,6 @@ async function listarVagasPorDia(req, res) {
       return res
         .status(400)
         .json({ message: "Todos os campos são obrigatórios" });
-    }
-
-    if (!verificaEscritorio(id_escritorio)) {
-      return res.status(400).json({
-        message: "id escritorio invalido",
-      });
     }
 
     const capacidade = await db.query(

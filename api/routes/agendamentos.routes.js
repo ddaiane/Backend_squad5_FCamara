@@ -6,10 +6,11 @@ const {
   alterarAgendamento,
   listarAgendamentos,
 } = require("../models/agendamento");
+const { escritorioValido } = require("../models/middlewares");
 
-router.post("/", criarAgendamento);
-router.patch("/:id_escritorio", alterarAgendamento);
-router.delete("/:id_escritorio/:id_agendamento", excluirAgendamento);
 router.get("/:id_usuario", listarAgendamentos);
+router.post("/", criarAgendamento);
+router.patch("/:id_escritorio", escritorioValido, alterarAgendamento);
+router.delete("/:id_escritorio/:id_agendamento", escritorioValido, excluirAgendamento);
 
 module.exports = router;
