@@ -2,9 +2,9 @@ const { verificaEscritorio, conferenciaDeUsuario, buscaAgendamento,
         usuarioAgendamento, conferenciaDeDataNaoRepetida } = require("./uteis");
 
 
-async function escritorioValido(req, res, next){
+async function escritorioValido(req, res, next){ //verifica se o id de escritorio enviado é de um escritorio cadastrado
   let id_escritorio;
-  req.method == 'POST' ? id_escritorio = req.body.id_escritorio : id_usuario = req.params.id_escritorio;
+  req.method == 'POST' ? id_escritorio = req.body.id_escritorio : id_escritorio = req.params.id_escritorio;
   if(await verificaEscritorio(id_escritorio)){
     next();
   } else{
@@ -12,7 +12,7 @@ async function escritorioValido(req, res, next){
   }
 }
 
-async function usuarioExiste(req, res, next) {
+async function usuarioExiste(req, res, next) { //verifica se usuario existe no BD
   let id_usuario;
   req.method == 'POST' ? id_usuario = req.body.id_usuario : id_usuario = req.params.id_usuario
   if ((await conferenciaDeUsuario(id_usuario))) {
@@ -44,7 +44,7 @@ async function agendamentoPertenceUsuario(req, res, next) { //verifica se o agen
   }
 }
 
-async function dataNaoRepetida(req, res, next) {
+async function dataNaoRepetida(req, res, next) {//verifica se usuario nao tem ja outra reserva no mesmo dia
   const { id_usuario, data } = req.body;
   if (!(await conferenciaDeDataNaoRepetida(id_usuario, data))) {
     return res.status(400).json({

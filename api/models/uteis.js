@@ -48,10 +48,11 @@ async function verificaEscritorio(id_escritorio) { //verifica se o id de escrito
   } else {
     idVerifica = id_escritorio;
   }
-  const numEscritorios = await db.query (`select count(*) from lotacao`,
+  let numEscritorios = await db.query (`select count(*) from lotacao`,
   { type: QueryTypes.SELECT });
-
-  if (idVerifica > 0 && idVerifica <= Number(numEscritorios[0]["count"])) {
+  numEscritorios = parseInt(numEscritorios[0]["count"]);
+ 
+  if (idVerifica > 0 && idVerifica <= numEscritorios) {
     return true;
   } else {
     return false;

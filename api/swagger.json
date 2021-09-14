@@ -239,6 +239,7 @@
           }
         }
       },
+      
       "patch": {
         "tags": [],
         "description": "Altera dados sobre o escritório informado",
@@ -280,8 +281,50 @@
             "description": "Not Found"
           }
         }
-      } 
+      }
     },
+    "/lotacao/": {
+      "post": {
+        "tags": [],
+        "description": "Cria escritório e retorna o id do novo escritorio",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id_usuario": {
+                  "example": "2"
+                },
+                "nome": {
+                  "example": "Rio de Janeiro"
+                },
+                "capacidade": {
+                  "example": "100"
+                },
+                "porcentagem": {
+                  "example": "40"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+
+    },
+    
     "/usuarios/": {
       "get": {
         "tags": [],

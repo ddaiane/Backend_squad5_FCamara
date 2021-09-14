@@ -13,7 +13,6 @@ async function criarAgendamento(req, res) {
         message: "Todos os campos são obrigatórios",
       });
     }
-
     const resultado = await db.query(
       `INSERT INTO agenda (id_usuario, data, id_escritorio) VALUES(${id_usuario}, '${data}', ${id_escritorio}) RETURNING *`,
       {
@@ -33,7 +32,7 @@ async function criarAgendamento(req, res) {
 //parametros na url. deleta agendamento e retorna a data do agendamento cancelado. funcionando
 async function excluirAgendamento(req, res) {
   try {
-    const { id_agendamento, id_usuario } = req.params;  
+    const { id_agendamento } = req.params;  
 
     const resultado = await db.query(
       `DELETE FROM agenda WHERE id_agendamento=${id_agendamento} RETURNING data`,
@@ -55,7 +54,7 @@ async function excluirAgendamento(req, res) {
 //localhost:3000/api/agendamentos/:id_agendamento
 async function alterarAgendamento(req, res) {
   try {
-    const { id_usuario, data: novaData } = req.body;
+    const { data: novaData } = req.body;
     const { id_agendamento } = req.params;
 
     //Verificação se todos os campos estão presentes, mensagem para o front

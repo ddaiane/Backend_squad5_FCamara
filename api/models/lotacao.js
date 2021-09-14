@@ -1,5 +1,6 @@
 const { QueryTypes } = require("sequelize");
 const db = require("../DB/db");
+const {verificaEscritorio} = require("./uteis");
 
 //funcao que entrega todos dados de lotacao do escritorio solicitado (capacidade, porcentagem permitida e vagas)
 //localhost:3000/api/lotacao/:id_escritorio
@@ -77,7 +78,6 @@ async function alterarCapacidadeEscritorio(req, res) {
           });
         }
       }
-
       res.status(200).json({
         message: "Alterado com sucesso",
       });
@@ -95,7 +95,69 @@ async function alterarCapacidadeEscritorio(req, res) {
   }
 }
 
+//rota para criar um novo escritorio no banco de dados
+async function criarEscritorio(req, res) {
+  try {
+    const { nome, capacidade, porcentagem, id_usuario } = req.body;
+    const vagas = capacidade * porcentagem/100;
+
+    //Verificação se todos os campos estão presentes, mensagem para o front
+    if (!nome || !capacidade || !porcentagem || !id_usuario) {
+      return res.status(400).json({
+        message: "Todos os campos são obrigatórios",
+      });
+    }
+
+    //verifica se usuario é admin
+    const conferenciaAdmin = await db.query(
+      `SELECT isAdmin FROM usuario WHERE id = ${id_usuario}`,
+      { type: QueryTypes.SELECT }
+    );
+
+    if (conferenciaAdmin[0].isadmin === false) {
+      return res.status(400).json({
+        message: "Acesso negado.",
+      });
+    }
+
+    const nomeLivre = await db.query(
+      `SELECT count(1) FROM lotacao WHERE nome_escritorio = '${nome}'`, {
+          type: QueryTypes.SELECT
+      }
+  );
+  if (nomeLivre[0]["count"] != 0) {
+    return res.status(400).json({
+      message: "Já existe escritório com esse nome",
+    });
+  }
+
+  if(porcentagem <= 0 || porcentagem > 100) {
+    return res.status(400).json({
+      message: "Porcentagem inválida",
+    });
+  }
+
+  if (conferenciaAdmin[0].isadmin === true) {
+    const novoEscritorio = await db.query(
+      `INSERT INTO lotacao (nome_escritorio, capacidade, porcentagem_permitida, vagas) 
+  VALUES('${nome}', ${capacidade}, ${porcentagem}, ${vagas}) returning id_escritorio`, {
+          type: QueryTypes.INSERT,
+      }
+  );
+  res.status(200).json(
+    novoEscritorio[0][0]
+  );
+  }
+    
+    
+  } catch (err) {
+    res.status(404).json({ error: true, message: err.message });
+  }
+  
+}
+
 module.exports = {
   consultaCapacidadeEscritorio,
   alterarCapacidadeEscritorio,
+  criarEscritorio
 };
