@@ -72,13 +72,13 @@
         }
       }
     },
-    "/agendamentos/{id_escritorio}": {
+    "/agendamentos/{id_agendamento}": {
       "patch": {
         "tags": [],
         "description": "Altera um agendamento do usuário",
         "parameters": [
           {
-            "name": "id_escritorio",
+            "name": "id_agendamento",
             "in": "path",
             "required": true,
             "type": "number",
@@ -90,11 +90,11 @@
             "schema": {
               "type": "object",
               "properties": {
-                "id_agendamento": {
-                  "example": "12"
-                },
                 "data": {
                   "example": "2021-10-30"
+                },
+                "id_usuario": {
+                  "example": "1"
                 }
               }
             }
@@ -113,11 +113,17 @@
         }
       }
     },
-    "/agendamentos/{id_agendamento}": {
+    "/agendamentos/{id_usuario}/{id_agendamento}": {
       "delete": {
         "tags": [],
         "description": "Excluir um agendamento do usuário",
         "parameters": [
+          {
+            "name": "id_usuario",
+            "in": "path",
+            "required": true,
+            "type": "number"
+          },
           {
             "name": "id_agendamento",
             "in": "path",

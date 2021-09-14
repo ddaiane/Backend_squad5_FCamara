@@ -7,6 +7,7 @@ const db = require("../DB/db");
 //http://localhost:3000/api/usuarios funcionando
 async function selectUsuarios(req, res) {
   try {
+    
     const usuarios = await db.query(
       "SELECT id, nome, email, isAdmin FROM usuario", {
         type: QueryTypes.SELECT
