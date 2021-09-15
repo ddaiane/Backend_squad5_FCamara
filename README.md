@@ -8,7 +8,6 @@ tecnologias utilizadas: nodejs, express e banco de dados postgreSQL
 - `npm start`
 - aplicação roda no `localhost:3000` no navegador
 
-*desenvolvimento na branch development*
 
 *documentação das rotas da api em `localhost:3000/api/docs`*
 
