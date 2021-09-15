@@ -24,7 +24,7 @@ app.use(cookieParser());
 
 //entrega os css, imagens e scripts
 //entregando esse apenas pra testar como ta a saida dos dados e a conexao entre tudo, quando integrar com o react tem que mudar aqui!
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public', 'build')));
 
 
 
@@ -46,7 +46,7 @@ app.use('/api/lotacao', lotacaoRouter);
 app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(require("./swagger.json")));
 
 //entrega paginas
-var indexPath = __dirname + "/views/index.html";
+var indexPath = __dirname + "/public/build/index.html";
 app.get("*", function(req, res) {
    res.sendFile(indexPath);
  });
