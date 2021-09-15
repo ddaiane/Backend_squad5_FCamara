@@ -11,8 +11,11 @@ async function createTables() {
     await insereEscritorio(1, 'São Paulo', 600, 40, 240);
     await insereEscritorio(2, 'Santos', 100, 40, 40);
     console.log("criando usuarios");
-    await insereUsuarios(2, 'admin', 'admin@gmail.com', '12345', true);
-    await insereUsuarios(1, 'Daiane Marcon', 'daianemarcon@gmail.com', '12345', false);
+    await insereUsuarios(1, 'admin', 'admin@gmail.com', '12345', true);
+    await insereUsuarios(2, 'Daiane Marcon', 'daianemarcon@gmail.com', '12345', false);
+    await insereUsuarios(3, 'Luccas', 'luccas@gmail.com', '12345', false);
+    await insereUsuarios(4, 'Debora Brum', 'deborabrum@gmail.com', '12345', false);
+    
 }
 
 //cria as tabelas do bd se ainda nao existirem

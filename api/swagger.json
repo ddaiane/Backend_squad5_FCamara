@@ -218,6 +218,46 @@
         }
       }
     },
+    "/calendario/vagas/{id_escritorio}/{mes}/{ano}": {
+      "get": {
+        "tags": [],
+        "description": "Retorna as vagas restantes em cada dia do mês (apenas dias que tenham pelo menos uma reserva. caso o dia não apareça no json retornado então ele está com todas vagas disponíveis)",
+        "parameters": [
+          {
+            "name": "id_escritorio",
+            "in": "path",
+            "required": true,
+            "type": "number",
+            "example": 1
+          },
+          {
+            "name": "mes",
+            "in": "path",
+            "required": true,
+            "type": "number",
+            "example": "09"
+          },
+          {
+            "name": "ano",
+            "in": "path",
+            "required": true,
+            "type": "number",
+            "example": "2021"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
     "/lotacao/{id_escritorio}": {
       "get": {
         "tags": [],
@@ -339,6 +379,41 @@
             "required": true,
             "type": "number",
             "example": "1"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "post": {
+        "tags": [],
+        "description": "Cria cadastro de um usuário",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nome": {
+                  "example": "José de Tal"
+                },
+                "email": {
+                  "example": "josedetal@gmail.com"
+                },
+                "senha": {
+                  "example": "12345"
+                },
+                "isAdmin": {
+                  "example": false
+                }
+              }
+            }
           }
         ],
         "responses": {
