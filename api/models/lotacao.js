@@ -1,6 +1,5 @@
 const { QueryTypes } = require("sequelize");
 const db = require("../DB/db");
-const {verificaEscritorio} = require("./uteis");
 
 //funcao que entrega todos dados de lotacao do escritorio solicitado (capacidade, porcentagem permitida e vagas)
 //localhost:3000/api/lotacao/:id_escritorio

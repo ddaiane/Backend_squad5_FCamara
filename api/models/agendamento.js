@@ -54,11 +54,11 @@ async function excluirAgendamento(req, res) {
 //localhost:3000/api/agendamentos/:id_agendamento
 async function alterarAgendamento(req, res) {
   try {
-    const { data: novaData } = req.body;
+    const { id_escritorio, data: novaData } = req.body;
     const { id_agendamento } = req.params;
 
     //Verificação se todos os campos estão presentes, mensagem para o front
-    if (!id_agendamento || !novaData) {
+    if (!id_agendamento || !novaData || !id_escritorio) {
       return res.status(400).json({
         message: "Todos os campos são obrigatórios",
       });
