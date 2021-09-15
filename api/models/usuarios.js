@@ -47,9 +47,40 @@ async function selectUmUsuario(req, res) {
   }
 }
 
+async function criarUsuario (req, res) { //cria um novo usuario
+  try {
+    let {nome, email, senha, isAdmin} = req.body;
+if (!isAdmin) { isAdmin = false;}
+
+const jaCadastrado = await db.query(
+  `SELECT count(1) FROM usuario WHERE email = '${email}'`, {
+      type: QueryTypes.SELECT
+  }
+);
+if (jaCadastrado[0]["count"] == 0) {
+  const cadastro = await db.query(
+    `INSERT INTO usuario (nome, email, senha, isAdmin) 
+VALUES('${nome}', '${email}', '${senha}', ${isAdmin}) returning id, nome, email`, {
+        type: QueryTypes.INSERT,
+    }
+);
+res.status(200).json(cadastro[0][0]);
+}
+else {
+  res.status(400).json({mensagem: "email já cadastrado"});
+}
+  } catch (error) {
+    res.status(404).json({
+      error: true,
+      message: err.message
+    });
+  }
+}
+
 
 
 module.exports = {
   selectUsuarios,
-  selectUmUsuario
+  selectUmUsuario,
+  criarUsuario
 };

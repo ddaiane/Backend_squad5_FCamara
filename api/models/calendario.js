@@ -28,7 +28,7 @@ async function listarTodosAgendamentos(req, res) {
 }
 
 //localhost:3000/api/calendario/:id_escritorio?data=2021-09-12
-async function listarVagasPorDia(req, res) {
+async function listarVagasPorDia(req, res) { //entrega quantas vagas estao sobrando no dia
   try {
     const { id_escritorio } = req.params;
     const { data } = req.query;
@@ -66,7 +66,34 @@ async function listarVagasPorDia(req, res) {
 //lista vagas em cada dia do mês (retorna vagas que estão sobrando em dias que o escritorio já tem algum agendamento)
 //se a data nao estiver na lista, é pq o escritorio nao tem nenhum agendamento naquele dia
 async function listarVagasRestantesMes(req, res) {
-  const { id_escritorio, mes } = req.params;
+ try {
+  const { id_escritorio, mes, ano } = req.params;
+
+  const reservas = await db.query(
+    `SELECT count(*) as vagas_livres, data 
+    FROM agenda 
+    WHERE id_escritorio = ${id_escritorio}
+    AND extract(month from data) = ${mes} AND extract(year from data) = ${ano}
+    GROUP BY data`,
+    { type: QueryTypes.SELECT }
+  );
+
+  let vagasEscritorio = await db.query(
+    `SELECT vagas FROM lotacao 
+    WHERE id_escritorio = ${id_escritorio}`,
+    { type: QueryTypes.SELECT }
+  ); 
+  vagasEscritorio = vagasEscritorio[0]["vagas"];
+
+  reservas.forEach(item => {
+    const agendamentosDia = parseInt(item["vagas_livres"]);
+    const vagasLivres = vagasEscritorio - agendamentosDia;
+    item["vagas_livres"] = vagasLivres;
+ });
+ res.status(200).json(reservas);
+ } catch (error) {
+  res.status(404).json({ error: true, message: err.message });
+ }
 }
 
 module.exports = { listarTodosAgendamentos, listarVagasPorDia, listarVagasRestantesMes };
