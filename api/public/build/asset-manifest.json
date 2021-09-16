@@ -1,0 +1,27 @@
+{
+  "files": {
+    "main.css": "/static/css/main.e45e0da1.chunk.css",
+    "main.js": "/static/js/main.a9355435.chunk.js",
+    "main.js.map": "/static/js/main.a9355435.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.a9f80a17.js",
+    "runtime-main.js.map": "/static/js/runtime-main.a9f80a17.js.map",
+    "static/js/2.aca00421.chunk.js": "/static/js/2.aca00421.chunk.js",
+    "static/js/2.aca00421.chunk.js.map": "/static/js/2.aca00421.chunk.js.map",
+    "index.html": "/index.html",
+    "static/css/main.e45e0da1.chunk.css.map": "/static/css/main.e45e0da1.chunk.css.map",
+    "static/js/2.aca00421.chunk.js.LICENSE.txt": "/static/js/2.aca00421.chunk.js.LICENSE.txt",
+    "static/media/F_LARANJA.abfc683b.png": "/static/media/F_LARANJA.abfc683b.png",
+    "static/media/blog_programador4.447cc7db.png": "/static/media/blog_programador4.447cc7db.png",
+    "static/media/calendario.8820ead3.png": "/static/media/calendario.8820ead3.png",
+    "static/media/greeting.00dbc655.jpg": "/static/media/greeting.00dbc655.jpg",
+    "static/media/home-intro-small.65bf8fb8.png": "/static/media/home-intro-small.65bf8fb8.png",
+    "static/media/home-intro.f1e2665a.png": "/static/media/home-intro.f1e2665a.png",
+    "static/media/servicos-digital.d528bce7.png": "/static/media/servicos-digital.d528bce7.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.a9f80a17.js",
+    "static/js/2.aca00421.chunk.js",
+    "static/css/main.e45e0da1.chunk.css",
+    "static/js/main.a9355435.chunk.js"
+  ]
+}
