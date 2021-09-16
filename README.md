@@ -4,7 +4,7 @@ O front-end da aplicação está sendo desenvolvido [aqui](https://github.com/g-
 
 Projeto desenvolvido durante o programa de formação FCamara 2021 Season 2.
 
-# Tecnologias utilizadas
+## Tecnologias utilizadas
 - Nodejs;
 - express;
 - Banco de dados postgreSQL.
