@@ -1,17 +1,25 @@
-back-end da aplicação web que o front está sendo desenvolvido [aqui](https://github.com/g-filipe/login-reserva-fc).
+# Sobre o Projeto
+Este é o back-end de um projeto para facilitar a migração do trabalho remoto para o híbrido respeitando as normas de segurança, onde os colaboradores de empresas poderão informar os dias em que irão ao escritório e não ultrapassar o máximo de ocupação do local.
+O front-end da aplicação está sendo desenvolvido [aqui](https://github.com/g-filipe/login-reserva-fc).
 
-tecnologias utilizadas: nodejs, express e banco de dados postgreSQL
+Projeto desenvolvido durante o programa de formação FCamara 2021 Season 2.
 
-**instruções:**
-- clonar o repositório
-- `npm install`
-- `npm start`
-- aplicação roda no `localhost:3000` no navegador
+#Tecnologias utilizadas
+- Nodejs;
+- express;
+- Banco de dados postgreSQL.
+
+**instruções para executar o projeto:**
+Para iniciar a aplicação, é necessário que a sua máquina tenha instalado Nodejs e Git.
+- clone o repositório
+- Execute `npm install`
+- Execute `npm start`
+- aplicação funciona em `localhost:3000/api` pelo navegador
 
 
 *documentação completa das rotas da api em `localhost:3000/api/docs`*
 
-**desenvolvedores**: 
+**Pessoas desenvolvedoras**: 
 
 Back-end: [Daiane Marcon](https://github.com/ddaiane) e [Debora Brum](https://github.com/DeboraBrum)
 
