@@ -19,9 +19,11 @@ Para iniciar a aplicação, é necessário que a sua máquina tenha instalado No
 
 *documentação completa das rotas da api em `localhost:3000/api/docs`*
 
-**Pessoas desenvolvedoras**: 
+**Pessoas responsáveis**: 
 
 Back-end: [Daiane Marcon](https://github.com/ddaiane) e [Debora Brum](https://github.com/DeboraBrum)
+Front-end: [Filipe Galvão](https://github.com/g-filipe) e [João Paulo Reis](http://github.com/Jotapas)
+UX/UI: [Luccas Araujo](https://www.linkedin.com/in/luccas-araujo-18038b99/) e [Sthefany Rodrigues](https://www.linkedin.com/in/sthefanyrodriguesvargas)
 
 ## ROTAS
 - **rotas de dados de lotação dos escritórios:**
